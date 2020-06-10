@@ -66,7 +66,6 @@ public class PlayerFrame extends javax.swing.JFrame{
         setUndecorated(true);
         setContentPane(mainPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //frame.getRootPane().putClientProperty("apple.awt.draggableWindowBackground", true);
         setResizable(false);
 
 
@@ -79,17 +78,6 @@ public class PlayerFrame extends javax.swing.JFrame{
         AppTitle.setText(title);
         currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
         imagePath = "\\images";
-
-//        JFrame frame = new JFrame(title);
-//        frame.setUndecorated(true);
-//        frame.setContentPane(new PlayerFrame().mainPanel);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        //frame.getRootPane().putClientProperty("apple.awt.draggableWindowBackground", true);
-//        frame.pack();
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-//        frame.setResizable(false);
-
 
         Play.addMouseListener(new MouseAdapter() {
             @Override
@@ -181,17 +169,21 @@ public class PlayerFrame extends javax.swing.JFrame{
                     if(windowCollapsed == false){
                         windowCollapsed = true;
 
-                        setSize(new Dimension(700, 100));
+                        setSize(new Dimension(700, 50));
 
-                        AppTitle.setFont(new Font("Nirmala UI", 0, 12));
+                        //AppTitle.setFont(new Font("Nirmala UI", 0, 12));
                         AppTitle.setText("Playing now... | " + songFile.getName());
+                        songNamePanel.setVisible(false);
+                        controlPanel.setVisible(false);
 
                     } else if (windowCollapsed == true){
                         windowCollapsed = false;
                         setSize(new Dimension(700, 250));
 
-                        AppTitle.setFont(new Font("Nirmala UI", 0, 18));
+                        //AppTitle.setFont(new Font("Nirmala UI", 0, 18));
                         AppTitle.setText(title);
+                        songNamePanel.setVisible(true);
+                        controlPanel.setVisible(true);
 
                     }
                 }
