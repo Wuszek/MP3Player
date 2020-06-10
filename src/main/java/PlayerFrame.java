@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -52,28 +53,43 @@ public class PlayerFrame extends javax.swing.JFrame{
             // If Nimbus is not available, you can set the GUI to another look and feel.
         }
 
+    new PlayerFrame().setVisible(true);
 
-        JFrame frame = new JFrame(title);
-        frame.setContentPane(new PlayerFrame().mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setResizable(false);
+
 
     }
 
 
 
     public PlayerFrame() {
+
+        setUndecorated(true);
+        setContentPane(mainPanel);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //frame.getRootPane().putClientProperty("apple.awt.draggableWindowBackground", true);
+        setResizable(false);
+
+
+
         songFile = new File("C:\\Users\\Wiktor\\Documents\\GIT projects\\MP3Player\\lib\\test.mp3");
         String fileName = songFile.getName();
         songNameDisplay.setText(fileName);
         player = mp3Player();
         player.addToPlayList(songFile);
-
+        AppTitle.setText(title);
         currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
         imagePath = "\\images";
+
+//        JFrame frame = new JFrame(title);
+//        frame.setUndecorated(true);
+//        frame.setContentPane(new PlayerFrame().mainPanel);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        //frame.getRootPane().putClientProperty("apple.awt.draggableWindowBackground", true);
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//        frame.setResizable(false);
+
 
         Play.addMouseListener(new MouseAdapter() {
             @Override
@@ -123,24 +139,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
             }
         });
-        AppTitle.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                xMouse = e.getX();
-                yMouse = e.getY();
-            }
-        });
-        AppTitle.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                super.mouseDragged(e);
-                int x = e.getXOnScreen();
-                int y = e.getYOnScreen();
 
-                mainPanel.setLocation(x - xMouse, y - yMouse);
-            }
-        });
         Exit.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -181,14 +180,15 @@ public class PlayerFrame extends javax.swing.JFrame{
                     System.out.println("Double clicked");
                     if(windowCollapsed == false){
                         windowCollapsed = true;
-                        mainPanel.setSize(new Dimension( mainPanel.getSize().width, 50));
+
+                        mainPanel.getRootPane().setSize(new Dimension(100, 250));
 
                         AppTitle.setFont(new Font("Nirmala UI", 0, 12));
                         AppTitle.setText("Playing now... | " + songFile.getName());
 
                     } else if (windowCollapsed == true){
                         windowCollapsed = false;
-                        mainPanel.setSize(new Dimension(mainPanel.getSize().width, 250));
+                        getRootPane().setSize(new Dimension(100, 250));
 
                         AppTitle.setFont(new Font("Nirmala UI", 0, 18));
                         AppTitle.setText(title);
@@ -224,7 +224,33 @@ public class PlayerFrame extends javax.swing.JFrame{
                 volumeControl(0);
             }
         });
+
+        AppTitle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                xMouse = e.getX();
+                yMouse = e.getY();
+            }
+        });
+
+        AppTitle.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                int x = e.getXOnScreen();
+                int y = e.getYOnScreen();
+                Point p = e.getPoint();
+                System.out.println(p);
+                setLocation(x - xMouse, y - yMouse);
+                repaint();
+            }
+        });
+
+        pack();
+        setLocationRelativeTo(null);
     }
+
 
 
     private MP3Player mp3Player(){
