@@ -41,6 +41,7 @@ public class PlayerFrame extends javax.swing.JFrame{
     String imagePath;
     boolean repeat = false;
     boolean play = false;
+    boolean pause = false;
     boolean windowCollapsed = false;
     int xMouse, yMouse;
     static String title = "App title";
@@ -113,9 +114,28 @@ public class PlayerFrame extends javax.swing.JFrame{
                 String image = currentPath+imagePath+"\\play_enabled.png";
                 Play.setIcon(new ImageIcon(image));
                 play = true;
+                String image2 = currentPath+imagePath+"\\pause.png";
+                Pause.setIcon(new ImageIcon(image2));
+
+
+
             }
         });
         Stop.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                String image = currentPath+imagePath+"\\stop_enabled.png";
+                Stop.setIcon(new ImageIcon(image));
+
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                String image2 = currentPath+imagePath+"\\stop.png";
+                Stop.setIcon(new ImageIcon(image2));
+            }
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -129,9 +149,30 @@ public class PlayerFrame extends javax.swing.JFrame{
         });
         Pause.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                String image = currentPath+imagePath+"\\pause_enabled.png";
+                Pause.setIcon(new ImageIcon(image));
+
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                if(pause == false) {
+                    String image2 = currentPath + imagePath + "\\pause.png";
+                    Pause.setIcon(new ImageIcon(image2));
+                }
+            }
+
+
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 player.pause();
+                pause = true;
+                String image = currentPath+imagePath+"\\pause_enabled.png";
+                Pause.setIcon(new ImageIcon(image));
+
             }
         });
         Repeat.addMouseListener(new MouseAdapter() {
@@ -256,7 +297,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                volumeDownControl(0.1);
+                volumeDownControl(0.05);
             }
 
         });
@@ -281,7 +322,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                volumeUpControl(0.1);
+                volumeUpControl(0.05);
             }
         });
         VolFull.addMouseListener(new MouseAdapter() {
