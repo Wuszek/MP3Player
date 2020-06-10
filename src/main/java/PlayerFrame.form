@@ -6,6 +6,8 @@
       <xy x="20" y="20" width="679" height="334"/>
     </constraints>
     <properties>
+      <background color="-16302250"/>
+      <foreground color="-16302250"/>
       <preferredSize width="700" height="250"/>
     </properties>
     <border type="none"/>
@@ -15,7 +17,9 @@
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-14393996"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="4d114" class="javax.swing.JLabel" binding="AppTitle">
@@ -33,7 +37,8 @@
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Exit"/>
+              <icon value="quit.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="2a4b8" class="javax.swing.JLabel" binding="Settings">
@@ -41,7 +46,8 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Settings"/>
+              <icon value="settings.png"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -51,7 +57,10 @@
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-16302250"/>
+          <foreground color="-16302250"/>
+        </properties>
         <border type="none"/>
         <children>
           <grid id="f204f" binding="songNameSubPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -59,7 +68,9 @@
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-16302250"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="7eb9f" class="javax.swing.JLabel" binding="songNameDisplay">
@@ -67,6 +78,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <font name="Emulogic" size="15"/>
                   <text value="PLAYING"/>
                 </properties>
               </component>
@@ -79,7 +91,10 @@
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-16302250"/>
+          <foreground color="-16302250"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="40de8" class="javax.swing.JLabel" binding="Repeat">
@@ -87,7 +102,8 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Repeat"/>
+              <icon value="repeat.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="230a6" class="javax.swing.JLabel" binding="Pause">
@@ -95,7 +111,8 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Pause"/>
+              <icon value="pause.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="4f6a2" class="javax.swing.JLabel" binding="Play">
@@ -103,7 +120,8 @@
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Play"/>
+              <icon value="play.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="dd219" class="javax.swing.JLabel" binding="Stop">
@@ -111,7 +129,8 @@
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Stop"/>
+              <icon value="stop.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="506df" class="javax.swing.JLabel" binding="Open">
@@ -119,7 +138,11 @@
               <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Open"/>
+              <doubleBuffered value="false"/>
+              <enabled value="true"/>
+              <icon value="open.png"/>
+              <iconTextGap value="0"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="867d2" class="javax.swing.JLabel" binding="VolDown">
@@ -127,7 +150,8 @@
               <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="VolDown"/>
+              <icon value="volume_down.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="23464" class="javax.swing.JLabel" binding="VolUp">
@@ -135,7 +159,8 @@
               <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="VolUp"/>
+              <icon value="volume_up.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="4aa19" class="javax.swing.JLabel" binding="VolFull">
@@ -143,7 +168,8 @@
               <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="VolFull"/>
+              <icon value="volume_full.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="921fb" class="javax.swing.JLabel" binding="Mute">
@@ -151,7 +177,8 @@
               <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Mute"/>
+              <icon value="mute.png"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
