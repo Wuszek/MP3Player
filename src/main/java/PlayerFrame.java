@@ -2,6 +2,8 @@ import jaco.mp3.player.MP3Player;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -70,6 +72,48 @@ public class PlayerFrame extends javax.swing.JFrame{
 
         currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
         imagePath = "\\images";
+
+        Play.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                player.play();
+            }
+        });
+        Stop.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                player.stop();
+            }
+        });
+        Pause.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                player.pause();
+            }
+        });
+        Repeat.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(repeat == false){
+                    repeat = true;
+                    player.setRepeat(repeat);
+
+                    String image = currentPath+imagePath+"\\repeat_enabled.png";
+                    Repeat.setIcon(new ImageIcon(image));
+                }else if (repeat == true){
+                    repeat = false;
+                    player.setRepeat(repeat);
+
+                    String image = currentPath+imagePath+"\\repeat.png";
+                    Repeat.setIcon(new ImageIcon(image));
+                }
+
+            }
+        });
     }
 
 
