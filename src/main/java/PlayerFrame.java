@@ -181,17 +181,18 @@ public class PlayerFrame extends javax.swing.JFrame{
                     if(windowCollapsed == false){
                         windowCollapsed = true;
 
-                        mainPanel.getRootPane().setSize(new Dimension(100, 250));
+                        setSize(new Dimension(700, 100));
 
                         AppTitle.setFont(new Font("Nirmala UI", 0, 12));
                         AppTitle.setText("Playing now... | " + songFile.getName());
 
                     } else if (windowCollapsed == true){
                         windowCollapsed = false;
-                        getRootPane().setSize(new Dimension(100, 250));
+                        setSize(new Dimension(700, 250));
 
                         AppTitle.setFont(new Font("Nirmala UI", 0, 18));
                         AppTitle.setText(title);
+
                     }
                 }
             }
@@ -240,8 +241,8 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseDragged(e);
                 int x = e.getXOnScreen();
                 int y = e.getYOnScreen();
-                Point p = e.getPoint();
-                System.out.println(p);
+                //Point p = e.getPoint();
+                System.out.println(x + " " + y);
                 setLocation(x - xMouse, y - yMouse);
                 repaint();
             }
