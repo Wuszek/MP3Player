@@ -1,7 +1,9 @@
 import jaco.mp3.player.MP3Player;
 
+
 import javax.sound.sampled.*;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -57,7 +59,7 @@ public class PlayerFrame extends javax.swing.JFrame{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        //frame.setResizable(false);
+        frame.setResizable(false);
 
     }
 
@@ -112,6 +114,114 @@ public class PlayerFrame extends javax.swing.JFrame{
                     Repeat.setIcon(new ImageIcon(image));
                 }
 
+            }
+        });
+        VolDown.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+            }
+        });
+        AppTitle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                xMouse = e.getX();
+                yMouse = e.getY();
+            }
+        });
+        AppTitle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                int x = e.getXOnScreen();
+                int y = e.getYOnScreen();
+
+                mainPanel.setLocation(x - xMouse, y - yMouse);
+            }
+        });
+        Exit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("Exiting.");
+                System.exit(0);
+            }
+        });
+        Settings.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JOptionPane .showMessageDialog(null, "About");
+            }
+        });
+        Open.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JFileChooser openFileChooser = new JFileChooser(currentDirectory);
+                openFileChooser.setFileFilter(new FileTypeFilter(".mp3", "Open MP3 files only"));
+                int result = openFileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION){
+                    songFile = openFileChooser.getSelectedFile();
+                    player.addToPlayList(songFile);
+                    player.skipBackward();
+                    currentDirectory = songFile.getAbsolutePath();
+                    songNameDisplay.setText("Playing now... | " + songFile.getName());
+                }
+
+            }
+        });
+        AppTitle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(e.getClickCount() == 2){
+                    System.out.println("Double clicked");
+                    if(windowCollapsed == false){
+                        windowCollapsed = true;
+                        mainPanel.setSize(new Dimension( mainPanel.getSize().width, 50));
+
+                        AppTitle.setFont(new Font("Nirmala UI", 0, 12));
+                        AppTitle.setText("Playing now... | " + songFile.getName());
+
+                    } else if (windowCollapsed == true){
+                        windowCollapsed = false;
+                        mainPanel.setSize(new Dimension(mainPanel.getSize().width, 250));
+
+                        AppTitle.setFont(new Font("Nirmala UI", 0, 18));
+                        AppTitle.setText(title);
+                    }
+                }
+            }
+        });
+        VolDown.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                volumeDownControl(0.1);
+            }
+        });
+        VolUp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                volumeUpControl(0.1);
+            }
+        });
+        VolFull.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                volumeControl(1.0);
+            }
+        });
+        Mute.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                volumeControl(0);
             }
         });
     }
@@ -217,5 +327,6 @@ public class PlayerFrame extends javax.swing.JFrame{
         }
 
     }
+
 
 }
