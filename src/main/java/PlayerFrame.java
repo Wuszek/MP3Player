@@ -1,5 +1,6 @@
 import jaco.mp3.player.MP3Player;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.io.File;
 import java.nio.file.Paths;
@@ -75,6 +76,102 @@ public class PlayerFrame extends javax.swing.JFrame{
     private MP3Player mp3Player(){
         MP3Player mp3Player = new MP3Player();
         return mp3Player;
+    }
+
+    private void volumeDownControl(double valueToPlusMinus){
+        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+        for(Mixer.Info mixerInfo : mixers){
+            Mixer mixer = AudioSystem.getMixer(mixerInfo);
+            Line.Info[] lineInfos = mixer.getTargetLineInfo();
+            for(Line.Info lineInfo : lineInfos){
+                Line line = null;
+                boolean opened = true;
+                try{
+                    line = mixer.getLine(lineInfo);
+                    opened = line.isOpen() || line instanceof Clip;
+                    if(!opened){
+                        line.open();
+                    }
+                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+                    float currentVolume = volControl.getValue();
+                    Double volumeToCut = valueToPlusMinus;
+                    float changedCalc = (float) ((float)currentVolume-(double)volumeToCut);
+                    volControl.setValue(changedCalc);
+
+                } catch (LineUnavailableException lineException){
+            } catch (IllegalArgumentException illException){
+                } finally{
+                    if(line != null && !opened){
+                        line.close();
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void volumeUpControl(double valueToPlusMinus){
+        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+        for(Mixer.Info mixerInfo : mixers){
+            Mixer mixer = AudioSystem.getMixer(mixerInfo);
+            Line.Info[] lineInfos = mixer.getTargetLineInfo();
+            for(Line.Info lineInfo : lineInfos){
+                Line line = null;
+                boolean opened = true;
+                try{
+                    line = mixer.getLine(lineInfo);
+                    opened = line.isOpen() || line instanceof Clip;
+                    if(!opened){
+                        line.open();
+                    }
+                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+                    float currentVolume = volControl.getValue();
+                    Double volumeToCut = valueToPlusMinus;
+                    float changedCalc = (float) ((float)currentVolume+(double)volumeToCut);
+                    volControl.setValue(changedCalc);
+
+                } catch (LineUnavailableException lineException){
+                } catch (IllegalArgumentException illException){
+                } finally{
+                    if(line != null && !opened){
+                        line.close();
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void volumeControl(double valueToPlusMinus){
+        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+        for(Mixer.Info mixerInfo : mixers){
+            Mixer mixer = AudioSystem.getMixer(mixerInfo);
+            Line.Info[] lineInfos = mixer.getTargetLineInfo();
+            for(Line.Info lineInfo : lineInfos){
+                Line line = null;
+                boolean opened = true;
+                try{
+                    line = mixer.getLine(lineInfo);
+                    opened = line.isOpen() || line instanceof Clip;
+                    if(!opened){
+                        line.open();
+                    }
+                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+                    float currentVolume = volControl.getValue();
+                    Double volumeToCut = valueToPlusMinus;
+                    float changedCalc = (float) ((double)volumeToCut);
+                    volControl.setValue(changedCalc);
+
+                } catch (LineUnavailableException lineException){
+                } catch (IllegalArgumentException illException){
+                } finally{
+                    if(line != null && !opened){
+                        line.close();
+                    }
+                }
+            }
+        }
+
     }
 
 }
