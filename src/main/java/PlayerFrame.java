@@ -1,14 +1,18 @@
 import jaco.mp3.player.MP3Player;
 
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
@@ -36,9 +40,12 @@ public class PlayerFrame extends javax.swing.JFrame{
     String currentPath;
     String imagePath;
     boolean repeat = false;
+    boolean play = false;
     boolean windowCollapsed = false;
     int xMouse, yMouse;
     static String title = "App title";
+
+
 
     public static void main(String[] args) {
 
@@ -77,20 +84,47 @@ public class PlayerFrame extends javax.swing.JFrame{
         player.addToPlayList(songFile);
         AppTitle.setText(title);
         currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-        imagePath = "\\images";
+        imagePath = "\\src\\main\\resources";
 
         Play.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                String image = currentPath+imagePath+"\\play_enabled.png";
+                Play.setIcon(new ImageIcon(image));
+
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                if(play == false){
+                System.out.println("exited");
+                String image2 = currentPath+imagePath+"\\play.png";
+                Play.setIcon(new ImageIcon(image2));
+                }
+
+            }
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 player.play();
+                //boolean play = true;
+                String image = currentPath+imagePath+"\\play_enabled.png";
+                Play.setIcon(new ImageIcon(image));
+                play = true;
             }
         });
         Stop.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 player.stop();
+                String image = currentPath+imagePath+"\\play.png";
+                Play.setIcon(new ImageIcon(image));
+                play = false;
+
             }
         });
         Pause.addMouseListener(new MouseAdapter() {
@@ -108,6 +142,9 @@ public class PlayerFrame extends javax.swing.JFrame{
                     repeat = true;
                     player.setRepeat(repeat);
 
+                    System.out.println(currentPath);
+                    System.out.println(imagePath);
+
                     String image = currentPath+imagePath+"\\repeat_enabled.png";
                     Repeat.setIcon(new ImageIcon(image));
                 }else if (repeat == true){
@@ -120,21 +157,32 @@ public class PlayerFrame extends javax.swing.JFrame{
 
             }
         });
-        VolDown.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
-            }
-        });
 
         Exit.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                String image = currentPath+imagePath+"\\quit_enabled.png";
+                Exit.setIcon(new ImageIcon(image));
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                System.out.println("exited");
+                String image2 = currentPath+imagePath+"\\quit.png";
+                Exit.setIcon(new ImageIcon(image2));
+            }
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Exiting.");
                 System.exit(0);
             }
+
+
         });
         Settings.addMouseListener(new MouseAdapter() {
             @Override
@@ -191,12 +239,45 @@ public class PlayerFrame extends javax.swing.JFrame{
         });
         VolDown.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                String image = currentPath+imagePath+"\\volume_down_enabled.png";
+                VolDown.setIcon(new ImageIcon(image));
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                System.out.println("exited");
+                String image2 = currentPath+imagePath+"\\volume_down.png";
+                VolDown.setIcon(new ImageIcon(image2));
+            }
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 volumeDownControl(0.1);
             }
+
         });
+
+
         VolUp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                String image = currentPath+imagePath+"\\volume_up_enabled.png";
+                VolUp.setIcon(new ImageIcon(image));
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                System.out.println("exited");
+                String image2 = currentPath+imagePath+"\\volume_up.png";
+                VolUp.setIcon(new ImageIcon(image2));
+            }
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -242,6 +323,9 @@ public class PlayerFrame extends javax.swing.JFrame{
 
         pack();
         setLocationRelativeTo(null);
+
+
+
     }
 
 
@@ -347,6 +431,16 @@ public class PlayerFrame extends javax.swing.JFrame{
 
     }
 
+    public static void wait(int ms){
+        try
+        {
+            Thread.sleep(ms);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
 
 
 }
