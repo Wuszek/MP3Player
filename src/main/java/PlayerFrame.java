@@ -36,6 +36,8 @@ public class PlayerFrame extends javax.swing.JFrame{
     private JPanel songNameSubPanel;
     private JLabel songNameDisplay;
     private JPanel playlistPanel;
+    private JTextPane playlistPane;
+    private JLabel playlistLabel;
     private JTextArea playlistArea;
 
     MP3Player player;
@@ -51,7 +53,7 @@ public class PlayerFrame extends javax.swing.JFrame{
     boolean windowCollapsed = false;
     int xMouse, yMouse;
     static String title = "App title";
-
+    String playlist;
 
 
     public static void main(String[] args) {
@@ -68,30 +70,30 @@ public class PlayerFrame extends javax.swing.JFrame{
         }
 
     new PlayerFrame().setVisible(true);
-
-
-
     }
-
-
 
     public PlayerFrame() {
 
+        setTitle("MP3 Player");
         setUndecorated(true);
         setContentPane(mainPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
+        currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+        imagePath = "\\src\\main\\resources";
 
+        String defaultTrack = currentPath+imagePath+"\\test.mp3";
 
-        songFile = new File("C:\\Users\\admin\\Documents\\GIT projects\\MP3Player\\lib\\test.mp3");
+        songFile = new File(defaultTrack);
         String fileName = songFile.getName();
         songNameDisplay.setText(fileName);
+        playlist = fileName + "\n";
+        playlistPane.setText(playlist);
         player = mp3Player();
         player.addToPlayList(songFile);
         AppTitle.setText(title);
-        currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-        imagePath = "\\src\\main\\resources";
+
 
         Play.addMouseListener(new MouseAdapter() {
             @Override
@@ -282,6 +284,8 @@ public class PlayerFrame extends javax.swing.JFrame{
                 int result = openFileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION){
                     songFile = openFileChooser.getSelectedFile();
+                    String filename = songFile.getName();
+                    playlist = playlist + filename + "\n";
                     player.addToPlayList(songFile);
                     player.skipForward();
                     currentDirectory = songFile.getAbsolutePath();
@@ -292,11 +296,11 @@ public class PlayerFrame extends javax.swing.JFrame{
 
                     //List playlist = new List();
                     //playlist = (List) player.getPlayList();
-                    String playlist = player.getPlayList().toString();
-                    playlist = playlist.replace(", ","\n").replace("[","").replace("]","");
+                    //String playlist = player.getPlayList().toString();
+                    //playlist = playlist.replace(", ","\n").replace("[","").replace("]","");
 
                     System.out.println(playlist);
-                    playlistArea.setText(playlist);
+                    playlistPane.setText(playlist);
 
 
                 }
@@ -318,6 +322,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                         AppTitle.setText("Playing now... | " + songFile.getName());
                         songNamePanel.setVisible(false);
                         controlPanel.setVisible(false);
+                        playlistPanel.setVisible(false);
 
                     } else if (windowCollapsed == true){
                         windowCollapsed = false;
@@ -327,6 +332,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                         AppTitle.setText(title);
                         songNamePanel.setVisible(true);
                         controlPanel.setVisible(true);
+                        playlistPanel.setVisible(true);
 
                     }
                 }

@@ -198,11 +198,12 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="ec2ba" class="javax.swing.JTextArea" binding="playlistArea">
+              <component id="cdcea" class="javax.swing.JTextPane" binding="playlistPane">
                 <constraints/>
                 <properties>
                   <editable value="false"/>
-                  <lineWrap value="true"/>
+                  <text value=""/>
+                  <toolTipText value="Playlist"/>
                 </properties>
               </component>
             </children>
