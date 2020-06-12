@@ -216,7 +216,6 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                System.out.println("exited");
                 String image2 = currentPath+imagePath+"\\quit.png";
                 Exit.setIcon(new ImageIcon(image2));
             }
@@ -280,7 +279,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 if (result == JFileChooser.APPROVE_OPTION){
                     songFile = openFileChooser.getSelectedFile();
                     player.addToPlayList(songFile);
-                    player.skipBackward();
+                    player.skipForward();
                     currentDirectory = songFile.getAbsolutePath();
                     songNameDisplay.setText("Playing now... | " + songFile.getName());
                 }
@@ -328,7 +327,6 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                System.out.println("exited");
                 String image2 = currentPath+imagePath+"\\volume_down.png";
                 VolDown.setIcon(new ImageIcon(image2));
             }
@@ -375,24 +373,28 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                String image2 = currentPath+imagePath+"\\volume_full.png";
-                VolFull.setIcon(new ImageIcon(image2));
+                if(volfull == false) {
+                  String image2 = currentPath + imagePath + "\\volume_full.png";
+                  VolFull.setIcon(new ImageIcon(image2));
+                }
             }
 
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if(volfull == false) {
+                    volfull = true;
                     String image = currentPath+imagePath+"\\volume_full_enabled.png";
                     VolFull.setIcon(new ImageIcon(image));
                     volumeControl(1);
-                    volfull = true;
+
                 }
                 else if(volfull == true){
+                    volfull = false;
                     String image = currentPath+imagePath+"\\volume_full.png";
                     VolFull.setIcon(new ImageIcon(image));
                     volumeControl(0.5);
-                    volfull = false;
+
                 }
             }
         });
@@ -409,8 +411,10 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                String image2 = currentPath+imagePath+"\\mute.png";
-                Mute.setIcon(new ImageIcon(image2));
+                if(mute == false) {
+                  String image2 = currentPath + imagePath + "\\mute.png";
+                  Mute.setIcon(new ImageIcon(image2));
+                }
             }
 
             @Override
