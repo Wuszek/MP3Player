@@ -1,8 +1,8 @@
-# Distance calculator 
+# MP3Player 
 
 ![Build Status](https://travis-ci.com/Wuszek/Java3Exercise.svg?token=qwXjy3hJBFKyzysCpz3i&branch=master&status=passed)
 
-Simple GIU Java app calculating distance between one main point and three others. 
+Simple GIU Java app to play mp3 files. 
 
 ## Table of contents
 * [What am I for?](#what-am-i-for)

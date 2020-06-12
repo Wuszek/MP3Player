@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerFrame extends javax.swing.JFrame{
@@ -33,6 +35,8 @@ public class PlayerFrame extends javax.swing.JFrame{
     private JLabel Open;
     private JPanel songNameSubPanel;
     private JLabel songNameDisplay;
+    private JPanel playlistPanel;
+    private JTextArea playlistArea;
 
     MP3Player player;
     File songFile;
@@ -282,6 +286,19 @@ public class PlayerFrame extends javax.swing.JFrame{
                     player.skipForward();
                     currentDirectory = songFile.getAbsolutePath();
                     songNameDisplay.setText("Playing now... | " + songFile.getName());
+
+
+                   // System.out.println(player.getPlayList());
+
+                    //List playlist = new List();
+                    //playlist = (List) player.getPlayList();
+                    String playlist = player.getPlayList().toString();
+                    playlist = playlist.replace(", ","\n").replace("[","").replace("]","");
+
+                    System.out.println(playlist);
+                    playlistArea.setText(playlist);
+
+
                 }
 
             }
