@@ -510,6 +510,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                     }
                     FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                     float currentVolume = volControl.getValue();
+                    System.out.println(currentVolume);
                     Double volumeToCut = valueToPlusMinus;
                     float changedCalc = (float) ((float)currentVolume-(double)volumeToCut);
                     volControl.setValue(changedCalc);
@@ -542,6 +543,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                     }
                     FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                     float currentVolume = volControl.getValue();
+                    System.out.println(currentVolume);
                     Double volumeToCut = valueToPlusMinus;
                     float changedCalc = (float) ((float)currentVolume+(double)volumeToCut);
                     volControl.setValue(changedCalc);
