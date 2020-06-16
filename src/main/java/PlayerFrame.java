@@ -6,9 +6,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -168,6 +166,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 String image2 = currentPath+imagePath+"\\pause.png";
                 Pause.setIcon(new ImageIcon(image2));
                 pause = false;
+                songNameDisplay.setText("Stopped");
                 System.out.println("Stop");
 
             }
@@ -307,7 +306,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                     //currentDirectory = songFile.getAbsolutePath();
                     //songNameDisplay.setText("Playing now... | " + songFile.getName());
 
-                    lm.addElement(songFile);
+                    //lm.addElement(songFile);
                     model.addRow(new Object[]{songFile.getName(), songFile});
 
                 }
@@ -535,6 +534,37 @@ public class PlayerFrame extends javax.swing.JFrame{
                     play = true;
                     String image2 = currentPath+imagePath+"\\pause.png";
                     Pause.setIcon(new ImageIcon(image2));
+                }
+            }
+        });
+//        table1.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyTyped(KeyEvent e) {
+//                super.keyTyped(e);
+//                if(e.getKeyCode() == KeyEvent.VK_DELETE){
+//                    int i = table1.getSelectedRow();
+//                    if(i >= 0){
+//                        model.removeRow(i);
+//                    }
+//                    else{
+//                        System.out.println("Delete error!");
+//                    }
+//                }
+//            }
+//        });
+
+        table1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if(e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    int i = table1.getSelectedRow();
+                    if(i >= 0){
+                        model.removeRow(i);
+                    }
+                    else{
+                        System.out.println("Delete error!");
+                    }
                 }
             }
         });
