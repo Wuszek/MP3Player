@@ -39,6 +39,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
     MP3Player player;
     File songFile;
+    File newSongFile;
     String currentDirectory = "home.user";
     String currentPath;
     String imagePath;
@@ -89,7 +90,7 @@ public class PlayerFrame extends javax.swing.JFrame{
         player.addToPlayList(songFile);
         AppTitle.setText(title);
 
-        lm.addElement(fileName);
+        lm.addElement(songFile);
         playList1.setModel(lm);
 
 
@@ -284,18 +285,14 @@ public class PlayerFrame extends javax.swing.JFrame{
                 if (result == JFileChooser.APPROVE_OPTION){
                     songFile = openFileChooser.getSelectedFile();
 
-                    String filename = songFile.getName();
+                    //String filename = songFile.getName();
 
-                    player.addToPlayList(songFile);
-                    player.skipForward();
-                    currentDirectory = songFile.getAbsolutePath();
-                    songNameDisplay.setText("Playing now... | " + songFile.getName());
-
+                    //player.addToPlayList(songFile);
+                    //player.skipForward();
+                    //currentDirectory = songFile.getAbsolutePath();
+                    //songNameDisplay.setText("Playing now... | " + songFile.getName());
 
                     lm.addElement(songFile);
-
-
-
 
                 }
 
@@ -313,7 +310,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                         setSize(new Dimension(700, 50));
 
                         //AppTitle.setFont(new Font("Nirmala UI", 0, 12));
-                        AppTitle.setText("Playing now... | " + songFile.getName());
+                        AppTitle.setText("Playing now... | " + newSongFile.getName());
                         songNamePanel.setVisible(false);
                         controlPanel.setVisible(false);
                         playlistPanel.setVisible(false);
@@ -496,18 +493,32 @@ public class PlayerFrame extends javax.swing.JFrame{
         setLocationRelativeTo(null);
 
 
-        playList1.addListSelectionListener(new ListSelectionListener() {
+        playList1.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(e.getClickCount() == 2)
+                {
+                    String newPath = playList1.getSelectedValue().toString();
+                    newSongFile = new File(newPath);
 
-                String newPath = playList1.getSelectedValue().toString();
-                File newSongFile = new File(newPath);
+                    player.addToPlayList(newSongFile);
+                    player.skipForward();
+                    currentDirectory = newSongFile.getAbsolutePath();
+                    songNameDisplay.setText("Playing now... | " + newSongFile.getName());
 
-                player.addToPlayList(newSongFile);
-                player.skipForward();
-                currentDirectory = newSongFile.getAbsolutePath();
-                songNameDisplay.setText("Playing now... | " + newSongFile.getName());
+                    String image = currentPath+imagePath+"\\play_enabled.png";
+                    Play.setIcon(new ImageIcon(image));
+                    play = true;
+                    String image2 = currentPath+imagePath+"\\pause.png";
+                    Pause.setIcon(new ImageIcon(image2));
+                    System.out.println("Play");
 
+                    //if(windowCollapsed == true) {
+                    //    AppTitle.setText("Playing now... | " + newSongFile.getName());
+                    //}
+
+                }
 
             }
         });
