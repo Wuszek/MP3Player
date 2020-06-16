@@ -4,6 +4,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,7 +34,9 @@ public class PlayerFrame extends javax.swing.JFrame{
     private JPanel playlistPanel;
     private JTextPane playlistPane;
     private JList playList1;
+    private JTable table1;
     DefaultListModel lm = new DefaultListModel();
+    DefaultTableModel model = new DefaultTableModel();
     private JLabel playlistLabel;
     private JTextArea playlistArea;
 
@@ -90,8 +93,20 @@ public class PlayerFrame extends javax.swing.JFrame{
         player.addToPlayList(songFile);
         AppTitle.setText(title);
 
-        lm.addElement(songFile);
-        playList1.setModel(lm);
+//        lm.addElement(songFile);
+//        playList1.setModel(lm);
+
+        table1.setDefaultEditor(Object.class, null);
+        Object[] collumns = {"Nazwa", "Ścieżka"};
+        model.setColumnIdentifiers(collumns);
+        table1.setModel(model);
+
+//        Object[] row = new Object[2];
+//        row[0] = songFile.getName();
+//        row[1] = songFile;
+
+        model.addRow(new Object[]{songFile.getName(), songFile});
+
 
 
         Play.addMouseListener(new MouseAdapter() {
@@ -293,6 +308,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                     //songNameDisplay.setText("Playing now... | " + songFile.getName());
 
                     lm.addElement(songFile);
+                    model.addRow(new Object[]{songFile.getName(), songFile});
 
                 }
 
@@ -310,14 +326,16 @@ public class PlayerFrame extends javax.swing.JFrame{
                         setSize(new Dimension(700, 50));
 
                         //AppTitle.setFont(new Font("Nirmala UI", 0, 12));
-                        AppTitle.setText("Playing now... | " + newSongFile.getName());
+
+                        AppTitle.setText("Playing now... | " + songFile.getName());
+
                         songNamePanel.setVisible(false);
                         controlPanel.setVisible(false);
                         playlistPanel.setVisible(false);
 
                     } else if (windowCollapsed == true){
                         windowCollapsed = false;
-                        setSize(new Dimension(700, 250));
+                        setSize(new Dimension(700, 300));
 
                         //AppTitle.setFont(new Font("Nirmala UI", 0, 18));
                         AppTitle.setText(title);
@@ -493,33 +511,31 @@ public class PlayerFrame extends javax.swing.JFrame{
         setLocationRelativeTo(null);
 
 
-        playList1.addMouseListener(new MouseAdapter() {
+        table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if(e.getClickCount() == 2)
-                {
-                    String newPath = playList1.getSelectedValue().toString();
-                    newSongFile = new File(newPath);
+                if(e.getClickCount() == 2) {
 
-                    player.addToPlayList(newSongFile);
+                    int column = 1;
+                    int row = table1.getSelectedRow();
+                    String newPath = table1.getModel().getValueAt(row, column).toString();
+                    System.out.println(newPath);
+
+                    //newSongFile = new File(newPath);
+                    songFile = new File(newPath);
+
+                    player.addToPlayList(songFile);
                     player.skipForward();
-                    currentDirectory = newSongFile.getAbsolutePath();
-                    songNameDisplay.setText("Playing now... | " + newSongFile.getName());
+                    currentDirectory = songFile.getAbsolutePath();
+                    songNameDisplay.setText("Playing now... | " + songFile.getName());
 
                     String image = currentPath+imagePath+"\\play_enabled.png";
                     Play.setIcon(new ImageIcon(image));
                     play = true;
                     String image2 = currentPath+imagePath+"\\pause.png";
                     Pause.setIcon(new ImageIcon(image2));
-                    System.out.println("Play");
-
-                    //if(windowCollapsed == true) {
-                    //    AppTitle.setText("Playing now... | " + newSongFile.getName());
-                    //}
-
                 }
-
             }
         });
     }
