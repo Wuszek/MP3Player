@@ -1,20 +1,15 @@
 import jaco.mp3.player.MP3Player;
 
-
-import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
@@ -37,6 +32,8 @@ public class PlayerFrame extends javax.swing.JFrame{
     private JLabel songNameDisplay;
     private JPanel playlistPanel;
     private JTextPane playlistPane;
+    private JList playList1;
+    DefaultListModel lm = new DefaultListModel();
     private JLabel playlistLabel;
     private JTextArea playlistArea;
 
@@ -60,7 +57,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -88,11 +85,12 @@ public class PlayerFrame extends javax.swing.JFrame{
         songFile = new File(defaultTrack);
         String fileName = songFile.getName();
         songNameDisplay.setText(fileName);
-        playlist = fileName + "\n";
-        playlistPane.setText(playlist);
         player = mp3Player();
         player.addToPlayList(songFile);
         AppTitle.setText(title);
+
+        lm.addElement(fileName);
+        playList1.setModel(lm);
 
 
         Play.addMouseListener(new MouseAdapter() {
@@ -124,6 +122,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 String image2 = currentPath+imagePath+"\\pause.png";
                 Pause.setIcon(new ImageIcon(image2));
                 System.out.println("Play");
+
             }
         });
 
@@ -284,23 +283,18 @@ public class PlayerFrame extends javax.swing.JFrame{
                 int result = openFileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION){
                     songFile = openFileChooser.getSelectedFile();
+
                     String filename = songFile.getName();
-                    playlist = playlist + filename + "\n";
+
                     player.addToPlayList(songFile);
                     player.skipForward();
                     currentDirectory = songFile.getAbsolutePath();
                     songNameDisplay.setText("Playing now... | " + songFile.getName());
 
 
-                   // System.out.println(player.getPlayList());
+                    lm.addElement(songFile);
 
-                    //List playlist = new List();
-                    //playlist = (List) player.getPlayList();
-                    //String playlist = player.getPlayList().toString();
-                    //playlist = playlist.replace(", ","\n").replace("[","").replace("]","");
 
-                    System.out.println(playlist);
-                    playlistPane.setText(playlist);
 
 
                 }
@@ -357,6 +351,12 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 volumeDownControl(0.05);
+                volfull = false;
+                mute = false;
+                String image = currentPath+imagePath+"\\volume_full.png";
+                VolFull.setIcon(new ImageIcon(image));
+                String image2 = currentPath+imagePath+"\\mute.png";
+                Mute.setIcon(new ImageIcon(image2));
             }
 
         });
@@ -381,6 +381,12 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 volumeUpControl(0.05);
+                volfull = false;
+                mute = false;
+                String image = currentPath+imagePath+"\\volume_full.png";
+                VolFull.setIcon(new ImageIcon(image));
+                String image2 = currentPath+imagePath+"\\mute.png";
+                Mute.setIcon(new ImageIcon(image2));
             }
         });
         VolFull.addMouseListener(new MouseAdapter() {
@@ -410,6 +416,9 @@ public class PlayerFrame extends javax.swing.JFrame{
                     String image = currentPath+imagePath+"\\volume_full_enabled.png";
                     VolFull.setIcon(new ImageIcon(image));
                     volumeControl(1);
+                    mute = false;
+                    String image2 = currentPath+imagePath+"\\mute.png";
+                    Mute.setIcon(new ImageIcon(image2));
 
                 }
                 else if(volfull == true){
@@ -448,6 +457,9 @@ public class PlayerFrame extends javax.swing.JFrame{
                   Mute.setIcon(new ImageIcon(image));
                   volumeControl(0);
                   mute = true;
+                  volfull = false;
+                  String image2 = currentPath+imagePath+"\\volume_full.png";
+                  VolFull.setIcon(new ImageIcon(image2));
                 }
                 else if(mute == true){
                     String image = currentPath+imagePath+"\\mute.png";
@@ -484,7 +496,21 @@ public class PlayerFrame extends javax.swing.JFrame{
         setLocationRelativeTo(null);
 
 
+        playList1.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
 
+                String newPath = playList1.getSelectedValue().toString();
+                File newSongFile = new File(newPath);
+
+                player.addToPlayList(newSongFile);
+                player.skipForward();
+                currentDirectory = newSongFile.getAbsolutePath();
+                songNameDisplay.setText("Playing now... | " + newSongFile.getName());
+
+
+            }
+        });
     }
 
 
