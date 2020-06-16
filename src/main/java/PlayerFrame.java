@@ -1,14 +1,17 @@
 import jaco.mp3.player.MP3Player;
+import lombok.SneakyThrows;
+import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Map;
+import javax.sound.sampled.AudioFileFormat;
 
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
@@ -52,10 +55,9 @@ public class PlayerFrame extends javax.swing.JFrame{
     boolean windowCollapsed = false;
     int xMouse, yMouse;
     static String title = "App title";
-    String playlist;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -71,7 +73,7 @@ public class PlayerFrame extends javax.swing.JFrame{
     new PlayerFrame().setVisible(true);
     }
 
-    public PlayerFrame() {
+    public PlayerFrame() throws IOException, UnsupportedAudioFileException {
 
         setTitle("MP3 Player");
         setUndecorated(true);
@@ -91,19 +93,15 @@ public class PlayerFrame extends javax.swing.JFrame{
         player.addToPlayList(songFile);
         AppTitle.setText(title);
 
-//        lm.addElement(songFile);
-//        playList1.setModel(lm);
 
         table1.setDefaultEditor(Object.class, null);
-        Object[] collumns = {"Nazwa", "Ścieżka"};
+        Object[] collumns = {"Nazwa", "Czas", "Ścieżka"};
         model.setColumnIdentifiers(collumns);
         table1.setModel(model);
 
-//        Object[] row = new Object[2];
-//        row[0] = songFile.getName();
-//        row[1] = songFile;
 
-        model.addRow(new Object[]{songFile.getName(), songFile});
+
+        model.addRow(new Object[]{songFile.getName(),getDurationWithMp3Spi(songFile) ,songFile});
 
 
 
@@ -290,6 +288,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 Open.setIcon(new ImageIcon(image2));
             }
 
+            @SneakyThrows
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -298,16 +297,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 int result = openFileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION){
                     songFile = openFileChooser.getSelectedFile();
-
-                    //String filename = songFile.getName();
-
-                    //player.addToPlayList(songFile);
-                    //player.skipForward();
-                    //currentDirectory = songFile.getAbsolutePath();
-                    //songNameDisplay.setText("Playing now... | " + songFile.getName());
-
-                    //lm.addElement(songFile);
-                    model.addRow(new Object[]{songFile.getName(), songFile});
+                    model.addRow(new Object[]{songFile.getName(), getDurationWithMp3Spi(songFile), songFile});
 
                 }
 
@@ -499,7 +489,6 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseDragged(e);
                 int x = e.getXOnScreen();
                 int y = e.getYOnScreen();
-                //Point p = e.getPoint();
                 System.out.println(x + " " + y);
                 setLocation(x - xMouse, y - yMouse);
                 repaint();
@@ -516,12 +505,11 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseClicked(e);
                 if(e.getClickCount() == 2) {
 
-                    int column = 1;
+                    int column = 2;
                     int row = table1.getSelectedRow();
                     String newPath = table1.getModel().getValueAt(row, column).toString();
                     System.out.println(newPath);
 
-                    //newSongFile = new File(newPath);
                     songFile = new File(newPath);
 
                     player.addToPlayList(songFile);
@@ -537,21 +525,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 }
             }
         });
-//        table1.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {
-//                super.keyTyped(e);
-//                if(e.getKeyCode() == KeyEvent.VK_DELETE){
-//                    int i = table1.getSelectedRow();
-//                    if(i >= 0){
-//                        model.removeRow(i);
-//                    }
-//                    else{
-//                        System.out.println("Delete error!");
-//                    }
-//                }
-//            }
-//        });
+
 
         table1.addKeyListener(new KeyAdapter() {
             @Override
@@ -674,5 +648,27 @@ public class PlayerFrame extends javax.swing.JFrame{
         }
 
     }
+
+    private static String getDurationWithMp3Spi(File file) throws UnsupportedAudioFileException, IOException {
+
+        AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+        if (fileFormat instanceof TAudioFileFormat) {
+            Map<?, ?> properties = ((TAudioFileFormat) fileFormat).properties();
+            String key = "duration";
+            Long microseconds = (Long) properties.get(key);
+            int mili = (int) (microseconds / 1000);
+            int sec = (mili / 1000) % 60;
+            int min = (mili / 1000) / 60;
+            //System.out.println(min + ":" + sec);
+            String minuta = String.valueOf(min);
+            String sekunda = String.valueOf(sec);
+            String czas = minuta + ":" + sekunda;
+            return czas;
+        } else {
+            throw new UnsupportedAudioFileException();
+        }
+
+    }
+
 
 }
