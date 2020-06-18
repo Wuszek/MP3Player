@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 
+import static javax.swing.JOptionPane.*;
+
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
     private JLabel Mute;
@@ -54,7 +56,7 @@ public class PlayerFrame extends javax.swing.JFrame{
     boolean volfull = false;
     boolean windowCollapsed = false;
     int xMouse, yMouse;
-    static String title = "App title";
+    static String title = "Simple mp3 player";
 
 
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
@@ -266,7 +268,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                JOptionPane .showMessageDialog(null, "About");
+                showMessageDialog(null, "About");
             }
         });
 
@@ -295,9 +297,15 @@ public class PlayerFrame extends javax.swing.JFrame{
                 JFileChooser openFileChooser = new JFileChooser(currentDirectory);
                 openFileChooser.setFileFilter(new FileTypeFilter(".mp3", "Open MP3 files only"));
                 int result = openFileChooser.showOpenDialog(null);
+                try{
                 if (result == JFileChooser.APPROVE_OPTION){
                     songFile = openFileChooser.getSelectedFile();
                     model.addRow(new Object[]{songFile.getName(), getDurationWithMp3Spi(songFile), songFile});
+
+                }
+                }
+                catch (Exception e1){
+                    JOptionPane.showMessageDialog(null, "Unsupported file." + "\n" + "This program approves only MP3 audio files.", "Incorrect audio file", JOptionPane.WARNING_MESSAGE);
 
                 }
 
@@ -666,6 +674,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             return czas;
         } else {
             throw new UnsupportedAudioFileException();
+
         }
 
     }
