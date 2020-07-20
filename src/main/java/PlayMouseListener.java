@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.nio.file.Paths;
 
 @AllArgsConstructor
-public class playMouseListener extends MouseAdapter {
+public class PlayMouseListener extends MouseAdapter {
 
 
     private JLabel playButton;

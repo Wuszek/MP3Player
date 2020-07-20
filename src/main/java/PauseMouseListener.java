@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @AllArgsConstructor
-public class pauseMouseListener extends MouseAdapter {
+public class PauseMouseListener extends MouseAdapter {
 
     private JLabel pauseButton;
     private boolean pause;

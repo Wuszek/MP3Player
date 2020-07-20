@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 @AllArgsConstructor
-public class openMouseListener extends MouseAdapter {
+public class OpenMouseListener extends MouseAdapter {
 
     private JLabel openButton;
     private File songFile;

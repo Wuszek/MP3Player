@@ -1,9 +1,8 @@
 import javax.sound.sampled.*;
-import java.io.IOException;
 
-public class volumeControl {
+public class VolumeUpControl {
 
-      volumeControl(double valueToPlusMinus) throws IOException, UnsupportedAudioFileException {
+    VolumeUpControl(double valueToPlusMinus){
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         for(Mixer.Info mixerInfo : mixers){
             Mixer mixer = AudioSystem.getMixer(mixerInfo);
@@ -19,8 +18,9 @@ public class volumeControl {
                     }
                     FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                     float currentVolume = volControl.getValue();
+                    System.out.println(currentVolume);
                     Double volumeToCut = valueToPlusMinus;
-                    float changedCalc = (float) ((double)volumeToCut);
+                    float changedCalc = (float) ((float)currentVolume+(double)volumeToCut);
                     volControl.setValue(changedCalc);
 
                 } catch (LineUnavailableException lineException){
@@ -35,5 +35,4 @@ public class volumeControl {
         }
 
     }
-
 }

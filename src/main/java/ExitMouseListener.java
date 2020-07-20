@@ -5,7 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @AllArgsConstructor
-public class exitMouseListener extends MouseAdapter {
+public class ExitMouseListener extends MouseAdapter {
 
     private JLabel exit;
 

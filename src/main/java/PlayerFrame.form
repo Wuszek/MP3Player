@@ -32,7 +32,7 @@
               <text value="APP TITLE"/>
             </properties>
           </component>
-          <component id="4df61" class="javax.swing.JLabel" binding="exit">
+          <component id="4df61" class="javax.swing.JLabel" binding="exitButton">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -41,7 +41,7 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="2a4b8" class="javax.swing.JLabel" binding="settings">
+          <component id="2a4b8" class="javax.swing.JLabel" binding="settingsButton">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>

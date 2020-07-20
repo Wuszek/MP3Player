@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 @AllArgsConstructor
-public class settingsMouseListener extends MouseAdapter {
+public class SettingsMouseListener extends MouseAdapter {
 
     private JLabel settings;
 

@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @AllArgsConstructor
-public class repeatMouseListener extends MouseAdapter {
+public class RepeatMouseListener extends MouseAdapter {
 
     private boolean repeat;
     private JLabel repeatButton;

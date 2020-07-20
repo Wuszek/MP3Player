@@ -1,8 +1,8 @@
 import javax.sound.sampled.*;
 
-public class volumeDownControl {
+public class VolumeDownControl {
 
-    volumeDownControl(double valueToPlusMinus){
+    VolumeDownControl(double valueToPlusMinus){
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         for(Mixer.Info mixerInfo : mixers){
             Mixer mixer = AudioSystem.getMixer(mixerInfo);
