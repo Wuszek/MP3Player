@@ -178,28 +178,16 @@ public class PlayerFrame extends javax.swing.JFrame{
             }
         });
 
-        pack();
-        setLocationRelativeTo(null);
+
 
 
         playlistTable.addMouseListener(new PlaylistTableMouseListener(playlistTable, songFile, player, playButton, play, pauseButton, songNameDisplay, currentDirectory));
 
 
-        playlistTable.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                if(e.getKeyCode() == KeyEvent.VK_DELETE) {
-                    int i = playlistTable.getSelectedRow();
-                    if(i >= 0){
-                        model.removeRow(i);
-                    }
-                    else{
-                        System.out.println("Delete error!");
-                    }
-                }
-            }
-        });
+        playlistTable.addKeyListener(new PlaylistTableKeyListener(model, playlistTable));
+
+        pack();
+        setLocationRelativeTo(null);
     }
 
 
