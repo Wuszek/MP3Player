@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.util.Map;
 
 @AllArgsConstructor
-public class getDurationWithMp3Spi {
+public class SongDurationCalculator {
 
     private File songFile;
 
-    private String getDurationWithMp3Spi(File songFile) throws UnsupportedAudioFileException, IOException {
+    public static String getDurationWithMp3Spi(File songFile) throws UnsupportedAudioFileException, IOException {
 
         AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(songFile);
         if (fileFormat instanceof TAudioFileFormat) {

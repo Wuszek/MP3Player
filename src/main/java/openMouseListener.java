@@ -41,7 +41,7 @@ public class openMouseListener extends MouseAdapter {
         try{
             if (result == JFileChooser.APPROVE_OPTION){
                 songFile = openFileChooser.getSelectedFile();
-                model.addRow(new Object[]{songFile.getName(), new getDurationWithMp3Spi(songFile), songFile});
+                model.addRow(new Object[]{songFile.getName(), SongDurationCalculator.getDurationWithMp3Spi(songFile), songFile});
 
             }
         }
