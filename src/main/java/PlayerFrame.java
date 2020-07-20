@@ -115,31 +115,8 @@ public class PlayerFrame extends javax.swing.JFrame{
 
         repeatButton.addMouseListener(new repeatMouseListener(repeat, repeatButton, player));
 
-        exit.addMouseListener(new MouseAdapter() {
+        exit.addMouseListener(new exitMouseListener(exit));
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                String image = currentPath+imagePath+"\\quit_enabled.png";
-                exit.setIcon(new ImageIcon(image));
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
-                String image2 = currentPath+imagePath+"\\quit.png";
-                exit.setIcon(new ImageIcon(image2));
-            }
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("Exiting.");
-                System.exit(0);
-            }
-
-
-        });
         settings.addMouseListener(new MouseAdapter() {
 
             @Override
