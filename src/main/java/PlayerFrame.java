@@ -13,8 +13,6 @@ import java.nio.file.Paths;
 import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 
-import static javax.swing.JOptionPane.*;
-
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
     private JLabel muteButton;
@@ -117,29 +115,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
         exit.addMouseListener(new exitMouseListener(exit));
 
-        settings.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                String image = currentPath+imagePath+"\\settings_enabled.png";
-                settings.setIcon(new ImageIcon(image));
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
-                String image2 = currentPath+imagePath+"\\settings.png";
-                settings.setIcon(new ImageIcon(image2));
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                showMessageDialog(null, "About");
-            }
-        });
+        settings.addMouseListener(new settingsMouseListener(settings));
 
 
         openButton.addMouseListener(new MouseAdapter() {
