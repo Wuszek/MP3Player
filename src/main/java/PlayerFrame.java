@@ -103,11 +103,11 @@ public class PlayerFrame extends javax.swing.JFrame{
 
 
 
-        model.addRow(new Object[]{songFile.getName(),getDurationWithMp3Spi(songFile) ,songFile});
+        model.addRow(new Object[]{songFile.getName(), getDurationWithMp3Spi(songFile),songFile});
 
 
 
-        Play.addMouseListener(new MouseAdapter() {
+        Play.addMouseListener(new playMouseListener() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
@@ -362,7 +362,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                volumeDownControl(0.05);
+                new volumeDownControl(0.05);
                 volfull = false;
                 mute = false;
                 String image = currentPath+imagePath+"\\volume_full.png";
@@ -392,7 +392,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                volumeUpControl(0.05);
+                new volumeUpControl(0.05);
                 volfull = false;
                 mute = false;
                 String image = currentPath+imagePath+"\\volume_full.png";
@@ -427,7 +427,13 @@ public class PlayerFrame extends javax.swing.JFrame{
                     volfull = true;
                     String image = currentPath+imagePath+"\\volume_full_enabled.png";
                     VolFull.setIcon(new ImageIcon(image));
-                    volumeControl(1);
+                    try {
+                        new volumeControl(1);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
+                        unsupportedAudioFileException.printStackTrace();
+                    }
                     mute = false;
                     String image2 = currentPath+imagePath+"\\mute.png";
                     Mute.setIcon(new ImageIcon(image2));
@@ -437,7 +443,13 @@ public class PlayerFrame extends javax.swing.JFrame{
                     volfull = false;
                     String image = currentPath+imagePath+"\\volume_full.png";
                     VolFull.setIcon(new ImageIcon(image));
-                    volumeControl(0.5);
+                    try {
+                        new volumeControl(0.5);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
+                        unsupportedAudioFileException.printStackTrace();
+                    }
 
                 }
             }
@@ -467,8 +479,14 @@ public class PlayerFrame extends javax.swing.JFrame{
                 if(mute == false) {
                   String image = currentPath+imagePath+"\\mute_enabled.png";
                   Mute.setIcon(new ImageIcon(image));
-                  volumeControl(0);
-                  mute = true;
+                    try {
+                        new volumeControl(0);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
+                        unsupportedAudioFileException.printStackTrace();
+                    }
+                    mute = true;
                   volfull = false;
                   String image2 = currentPath+imagePath+"\\volume_full.png";
                   VolFull.setIcon(new ImageIcon(image2));
@@ -476,7 +494,13 @@ public class PlayerFrame extends javax.swing.JFrame{
                 else if(mute == true){
                     String image = currentPath+imagePath+"\\mute.png";
                     Mute.setIcon(new ImageIcon(image));
-                    volumeControl(0.5);
+                    try {
+                        new volumeControl(0.5);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
+                        unsupportedAudioFileException.printStackTrace();
+                    }
                     mute = false;
                 }
             }
@@ -559,103 +583,7 @@ public class PlayerFrame extends javax.swing.JFrame{
         return mp3Player;
     }
 
-    private void volumeDownControl(double valueToPlusMinus){
-        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        for(Mixer.Info mixerInfo : mixers){
-            Mixer mixer = AudioSystem.getMixer(mixerInfo);
-            Line.Info[] lineInfos = mixer.getTargetLineInfo();
-            for(Line.Info lineInfo : lineInfos){
-                Line line = null;
-                boolean opened = true;
-                try{
-                    line = mixer.getLine(lineInfo);
-                    opened = line.isOpen() || line instanceof Clip;
-                    if(!opened){
-                        line.open();
-                    }
-                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                    float currentVolume = volControl.getValue();
-                    System.out.println(currentVolume);
-                    Double volumeToCut = valueToPlusMinus;
-                    float changedCalc = (float) ((float)currentVolume-(double)volumeToCut);
-                    volControl.setValue(changedCalc);
 
-                } catch (LineUnavailableException lineException){
-            } catch (IllegalArgumentException illException){
-                } finally{
-                    if(line != null && !opened){
-                        line.close();
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void volumeUpControl(double valueToPlusMinus){
-        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        for(Mixer.Info mixerInfo : mixers){
-            Mixer mixer = AudioSystem.getMixer(mixerInfo);
-            Line.Info[] lineInfos = mixer.getTargetLineInfo();
-            for(Line.Info lineInfo : lineInfos){
-                Line line = null;
-                boolean opened = true;
-                try{
-                    line = mixer.getLine(lineInfo);
-                    opened = line.isOpen() || line instanceof Clip;
-                    if(!opened){
-                        line.open();
-                    }
-                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                    float currentVolume = volControl.getValue();
-                    System.out.println(currentVolume);
-                    Double volumeToCut = valueToPlusMinus;
-                    float changedCalc = (float) ((float)currentVolume+(double)volumeToCut);
-                    volControl.setValue(changedCalc);
-
-                } catch (LineUnavailableException lineException){
-                } catch (IllegalArgumentException illException){
-                } finally{
-                    if(line != null && !opened){
-                        line.close();
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void volumeControl(double valueToPlusMinus){
-        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        for(Mixer.Info mixerInfo : mixers){
-            Mixer mixer = AudioSystem.getMixer(mixerInfo);
-            Line.Info[] lineInfos = mixer.getTargetLineInfo();
-            for(Line.Info lineInfo : lineInfos){
-                Line line = null;
-                boolean opened = true;
-                try{
-                    line = mixer.getLine(lineInfo);
-                    opened = line.isOpen() || line instanceof Clip;
-                    if(!opened){
-                        line.open();
-                    }
-                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                    float currentVolume = volControl.getValue();
-                    Double volumeToCut = valueToPlusMinus;
-                    float changedCalc = (float) ((double)volumeToCut);
-                    volControl.setValue(changedCalc);
-
-                } catch (LineUnavailableException lineException){
-                } catch (IllegalArgumentException illException){
-                } finally{
-                    if(line != null && !opened){
-                        line.close();
-                    }
-                }
-            }
-        }
-
-    }
 
     private static String getDurationWithMp3Spi(File file) throws UnsupportedAudioFileException, IOException {
 
@@ -678,6 +606,11 @@ public class PlayerFrame extends javax.swing.JFrame{
         }
 
     }
+
+
+
+
+
 
 
 }
