@@ -101,7 +101,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
 
 
-        model.addRow(new Object[]{songFile.getName(), getDurationWithMp3Spi(songFile),songFile});
+        model.addRow(new Object[]{songFile.getName(), new getDurationWithMp3Spi(songFile),songFile});
 
 
 
@@ -118,44 +118,46 @@ public class PlayerFrame extends javax.swing.JFrame{
         settings.addMouseListener(new settingsMouseListener(settings));
 
 
-        openButton.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                String image = currentPath+imagePath+"\\open_enabled.png";
-                openButton.setIcon(new ImageIcon(image));
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
-                String image2 = currentPath+imagePath+"\\open.png";
-                openButton.setIcon(new ImageIcon(image2));
-            }
-
-            @SneakyThrows
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                JFileChooser openFileChooser = new JFileChooser(currentDirectory);
-                openFileChooser.setFileFilter(new FileTypeFilter(".mp3", "openButton MP3 files only"));
-                int result = openFileChooser.showOpenDialog(null);
-                try{
-                if (result == JFileChooser.APPROVE_OPTION){
-                    songFile = openFileChooser.getSelectedFile();
-                    model.addRow(new Object[]{songFile.getName(), getDurationWithMp3Spi(songFile), songFile});
-
-                }
-                }
-                catch (Exception e1){
-                    JOptionPane.showMessageDialog(null, "Unsupported file." + "\n" + "This program approves only MP3 audio files.", "Incorrect audio file", JOptionPane.WARNING_MESSAGE);
-
-                }
-
-            }
-        });
+        openButton.addMouseListener(new openMouseListener(openButton, songFile, model, currentDirectory)
+        //{
+//
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//                super.mouseEntered(e);
+//                String image = currentPath+imagePath+"\\open_enabled.png";
+//                openButton.setIcon(new ImageIcon(image));
+//
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                super.mouseExited(e);
+//                String image2 = currentPath+imagePath+"\\open.png";
+//                openButton.setIcon(new ImageIcon(image2));
+//            }
+//
+//            @SneakyThrows
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+//                JFileChooser openFileChooser = new JFileChooser(currentDirectory);
+//                openFileChooser.setFileFilter(new FileTypeFilter(".mp3", "openButton MP3 files only"));
+//                int result = openFileChooser.showOpenDialog(null);
+//                try{
+//                if (result == JFileChooser.APPROVE_OPTION){
+//                    songFile = openFileChooser.getSelectedFile();
+//                    model.addRow(new Object[]{songFile.getName(), getDurationWithMp3Spi(songFile), songFile});
+//
+//                }
+//                }
+//                catch (Exception e1){
+//                    JOptionPane.showMessageDialog(null, "Unsupported file." + "\n" + "This program approves only MP3 audio files.", "Incorrect audio file", JOptionPane.WARNING_MESSAGE);
+//
+//                }
+//
+//            }
+//        }
+        );
         appTitle.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -430,27 +432,27 @@ public class PlayerFrame extends javax.swing.JFrame{
 
 
 
-    private static String getDurationWithMp3Spi(File file) throws UnsupportedAudioFileException, IOException {
-
-        AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-        if (fileFormat instanceof TAudioFileFormat) {
-            Map<?, ?> properties = ((TAudioFileFormat) fileFormat).properties();
-            String key = "duration";
-            Long microseconds = (Long) properties.get(key);
-            int mili = (int) (microseconds / 1000);
-            int sec = (mili / 1000) % 60;
-            int min = (mili / 1000) / 60;
-            //System.out.println(min + ":" + sec);
-            String minuta = String.valueOf(min);
-            String sekunda = String.valueOf(sec);
-            String czas = minuta + ":" + sekunda;
-            return czas;
-        } else {
-            throw new UnsupportedAudioFileException();
-
-        }
-
-    }
+//    private static String getDurationWithMp3Spi(File file) throws UnsupportedAudioFileException, IOException {
+//
+//        AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+//        if (fileFormat instanceof TAudioFileFormat) {
+//            Map<?, ?> properties = ((TAudioFileFormat) fileFormat).properties();
+//            String key = "duration";
+//            Long microseconds = (Long) properties.get(key);
+//            int mili = (int) (microseconds / 1000);
+//            int sec = (mili / 1000) % 60;
+//            int min = (mili / 1000) / 60;
+//            //System.out.println(min + ":" + sec);
+//            String minuta = String.valueOf(min);
+//            String sekunda = String.valueOf(sec);
+//            String czas = minuta + ":" + sekunda;
+//            return czas;
+//        } else {
+//            throw new UnsupportedAudioFileException();
+//
+//        }
+//
+//    }
 
 
 
