@@ -1,8 +1,8 @@
-# Distance calculator 
+# MP3Player 
 
-![Build Status](https://travis-ci.com/Wuszek/Java3Exercise.svg?token=qwXjy3hJBFKyzysCpz3i&branch=master&status=passed)
+![Build Status](https://travis-ci.com/Wuszek/MP3Player.svg?token=qwXjy3hJBFKyzysCpz3i&branch=develop)
 
-Simple GIU Java app calculating distance between one main point and three others. 
+Simple GIU Java app to play mp3 files. 
 
 ## Table of contents
 * [What am I for?](#what-am-i-for)
@@ -11,6 +11,8 @@ Simple GIU Java app calculating distance between one main point and three others
 
 ## What am I for?
   - Simple MP3 player based on jaco-mp3 library 
+  - Working playing in loop, Start, Stop, Pause, Play Next/Last, Volume, Mute and Full Volume buttons,
+  - When adding new file it appears on playlist, can play file from playlist by doubleclick
 
   
 ## Built With
@@ -19,11 +21,13 @@ Simple GIU Java app calculating distance between one main point and three others
   - Swing UI Designer from IntelliJ
   - [JACo MP3 library](http://jacomp3player.sourceforge.net/) - light-weight Java MP3 player library
   - [Project Lombok](https://projectlombok.org/) -  java library that can automatically create setters/getters and so on
-###### Tests
-  - [Cucumber](https://cucumber.io/) - IntelliJ plugin
-  - [Gherkin](https://cucumber.io/docs/gherkin/) - IntelliJ plugin
-  
+
 ## Screenshots  
   
-  ###### In progress
+  ###### Playing in full mode
+  ![Full mode](https://i.imgur.com/mCAmpIa.png)
+  
+  ###### Playing in small mode
+  
+  ![Small mode](https://i.imgur.com/dGDrfe5.png)
   

@@ -1,18 +1,19 @@
 import jaco.mp3.player.MP3Player;
+import lombok.SneakyThrows;
+import org.tritonus.share.sampled.file.TAudioFileFormat;
 
-
-import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
+import javax.sound.sampled.AudioFileFormat;
+
+import static javax.swing.JOptionPane.*;
 
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
@@ -33,9 +34,18 @@ public class PlayerFrame extends javax.swing.JFrame{
     private JLabel Open;
     private JPanel songNameSubPanel;
     private JLabel songNameDisplay;
+    private JPanel playlistPanel;
+    private JTextPane playlistPane;
+    private JList playList1;
+    private JTable table1;
+    DefaultListModel lm = new DefaultListModel();
+    DefaultTableModel model = new DefaultTableModel();
+    private JLabel playlistLabel;
+    private JTextArea playlistArea;
 
     MP3Player player;
     File songFile;
+    File newSongFile;
     String currentDirectory = "home.user";
     String currentPath;
     String imagePath;
@@ -46,15 +56,14 @@ public class PlayerFrame extends javax.swing.JFrame{
     boolean volfull = false;
     boolean windowCollapsed = false;
     int xMouse, yMouse;
-    static String title = "App title";
+    static String title = "Simple mp3 player";
 
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -64,30 +73,39 @@ public class PlayerFrame extends javax.swing.JFrame{
         }
 
     new PlayerFrame().setVisible(true);
-
-
-
     }
 
+    public PlayerFrame() throws IOException, UnsupportedAudioFileException {
 
-
-    public PlayerFrame() {
-
+        setTitle("MP3 Player");
         setUndecorated(true);
         setContentPane(mainPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
+        currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+        imagePath = "\\src\\main\\resources";
 
+        String defaultTrack = currentPath+imagePath+"\\test.mp3";
 
-        songFile = new File("C:\\Users\\admin\\Documents\\GIT projects\\MP3Player\\lib\\test.mp3");
+        songFile = new File(defaultTrack);
         String fileName = songFile.getName();
         songNameDisplay.setText(fileName);
         player = mp3Player();
         player.addToPlayList(songFile);
         AppTitle.setText(title);
-        currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-        imagePath = "\\src\\main\\resources";
+
+
+        table1.setDefaultEditor(Object.class, null);
+        Object[] collumns = {"Nazwa", "Czas", "Ścieżka"};
+        model.setColumnIdentifiers(collumns);
+        table1.setModel(model);
+
+
+
+        model.addRow(new Object[]{songFile.getName(),getDurationWithMp3Spi(songFile) ,songFile});
+
+
 
         Play.addMouseListener(new MouseAdapter() {
             @Override
@@ -118,6 +136,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 String image2 = currentPath+imagePath+"\\pause.png";
                 Pause.setIcon(new ImageIcon(image2));
                 System.out.println("Play");
+
             }
         });
 
@@ -147,6 +166,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 String image2 = currentPath+imagePath+"\\pause.png";
                 Pause.setIcon(new ImageIcon(image2));
                 pause = false;
+                songNameDisplay.setText("Stopped");
                 System.out.println("Stop");
 
             }
@@ -248,7 +268,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                JOptionPane .showMessageDialog(null, "About");
+                showMessageDialog(null, "About");
             }
         });
 
@@ -270,18 +290,23 @@ public class PlayerFrame extends javax.swing.JFrame{
                 Open.setIcon(new ImageIcon(image2));
             }
 
+            @SneakyThrows
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 JFileChooser openFileChooser = new JFileChooser(currentDirectory);
                 openFileChooser.setFileFilter(new FileTypeFilter(".mp3", "Open MP3 files only"));
                 int result = openFileChooser.showOpenDialog(null);
+                try{
                 if (result == JFileChooser.APPROVE_OPTION){
                     songFile = openFileChooser.getSelectedFile();
-                    player.addToPlayList(songFile);
-                    player.skipForward();
-                    currentDirectory = songFile.getAbsolutePath();
-                    songNameDisplay.setText("Playing now... | " + songFile.getName());
+                    model.addRow(new Object[]{songFile.getName(), getDurationWithMp3Spi(songFile), songFile});
+
+                }
+                }
+                catch (Exception e1){
+                    JOptionPane.showMessageDialog(null, "Unsupported file." + "\n" + "This program approves only MP3 audio files.", "Incorrect audio file", JOptionPane.WARNING_MESSAGE);
+
                 }
 
             }
@@ -298,18 +323,22 @@ public class PlayerFrame extends javax.swing.JFrame{
                         setSize(new Dimension(700, 50));
 
                         //AppTitle.setFont(new Font("Nirmala UI", 0, 12));
+
                         AppTitle.setText("Playing now... | " + songFile.getName());
+
                         songNamePanel.setVisible(false);
                         controlPanel.setVisible(false);
+                        playlistPanel.setVisible(false);
 
                     } else if (windowCollapsed == true){
                         windowCollapsed = false;
-                        setSize(new Dimension(700, 250));
+                        setSize(new Dimension(700, 300));
 
                         //AppTitle.setFont(new Font("Nirmala UI", 0, 18));
                         AppTitle.setText(title);
                         songNamePanel.setVisible(true);
                         controlPanel.setVisible(true);
+                        playlistPanel.setVisible(true);
 
                     }
                 }
@@ -334,6 +363,12 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 volumeDownControl(0.05);
+                volfull = false;
+                mute = false;
+                String image = currentPath+imagePath+"\\volume_full.png";
+                VolFull.setIcon(new ImageIcon(image));
+                String image2 = currentPath+imagePath+"\\mute.png";
+                Mute.setIcon(new ImageIcon(image2));
             }
 
         });
@@ -358,6 +393,12 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 volumeUpControl(0.05);
+                volfull = false;
+                mute = false;
+                String image = currentPath+imagePath+"\\volume_full.png";
+                VolFull.setIcon(new ImageIcon(image));
+                String image2 = currentPath+imagePath+"\\mute.png";
+                Mute.setIcon(new ImageIcon(image2));
             }
         });
         VolFull.addMouseListener(new MouseAdapter() {
@@ -387,6 +428,9 @@ public class PlayerFrame extends javax.swing.JFrame{
                     String image = currentPath+imagePath+"\\volume_full_enabled.png";
                     VolFull.setIcon(new ImageIcon(image));
                     volumeControl(1);
+                    mute = false;
+                    String image2 = currentPath+imagePath+"\\mute.png";
+                    Mute.setIcon(new ImageIcon(image2));
 
                 }
                 else if(volfull == true){
@@ -425,6 +469,9 @@ public class PlayerFrame extends javax.swing.JFrame{
                   Mute.setIcon(new ImageIcon(image));
                   volumeControl(0);
                   mute = true;
+                  volfull = false;
+                  String image2 = currentPath+imagePath+"\\volume_full.png";
+                  VolFull.setIcon(new ImageIcon(image2));
                 }
                 else if(mute == true){
                     String image = currentPath+imagePath+"\\mute.png";
@@ -450,7 +497,6 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseDragged(e);
                 int x = e.getXOnScreen();
                 int y = e.getYOnScreen();
-                //Point p = e.getPoint();
                 System.out.println(x + " " + y);
                 setLocation(x - xMouse, y - yMouse);
                 repaint();
@@ -461,7 +507,49 @@ public class PlayerFrame extends javax.swing.JFrame{
         setLocationRelativeTo(null);
 
 
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(e.getClickCount() == 2) {
 
+                    int column = 2;
+                    int row = table1.getSelectedRow();
+                    String newPath = table1.getModel().getValueAt(row, column).toString();
+                    System.out.println(newPath);
+
+                    songFile = new File(newPath);
+
+                    player.addToPlayList(songFile);
+                    player.skipForward();
+                    currentDirectory = songFile.getAbsolutePath();
+                    songNameDisplay.setText("Playing now... | " + songFile.getName());
+
+                    String image = currentPath+imagePath+"\\play_enabled.png";
+                    Play.setIcon(new ImageIcon(image));
+                    play = true;
+                    String image2 = currentPath+imagePath+"\\pause.png";
+                    Pause.setIcon(new ImageIcon(image2));
+                }
+            }
+        });
+
+
+        table1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if(e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    int i = table1.getSelectedRow();
+                    if(i >= 0){
+                        model.removeRow(i);
+                    }
+                    else{
+                        System.out.println("Delete error!");
+                    }
+                }
+            }
+        });
     }
 
 
@@ -487,6 +575,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                     }
                     FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                     float currentVolume = volControl.getValue();
+                    System.out.println(currentVolume);
                     Double volumeToCut = valueToPlusMinus;
                     float changedCalc = (float) ((float)currentVolume-(double)volumeToCut);
                     volControl.setValue(changedCalc);
@@ -519,6 +608,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                     }
                     FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                     float currentVolume = volControl.getValue();
+                    System.out.println(currentVolume);
                     Double volumeToCut = valueToPlusMinus;
                     float changedCalc = (float) ((float)currentVolume+(double)volumeToCut);
                     volControl.setValue(changedCalc);
@@ -566,5 +656,28 @@ public class PlayerFrame extends javax.swing.JFrame{
         }
 
     }
+
+    private static String getDurationWithMp3Spi(File file) throws UnsupportedAudioFileException, IOException {
+
+        AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+        if (fileFormat instanceof TAudioFileFormat) {
+            Map<?, ?> properties = ((TAudioFileFormat) fileFormat).properties();
+            String key = "duration";
+            Long microseconds = (Long) properties.get(key);
+            int mili = (int) (microseconds / 1000);
+            int sec = (mili / 1000) % 60;
+            int min = (mili / 1000) / 60;
+            //System.out.println(min + ":" + sec);
+            String minuta = String.valueOf(min);
+            String sekunda = String.valueOf(sec);
+            String czas = minuta + ":" + sekunda;
+            return czas;
+        } else {
+            throw new UnsupportedAudioFileException();
+
+        }
+
+    }
+
 
 }
