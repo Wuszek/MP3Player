@@ -198,7 +198,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="b5342" class="javax.swing.JTable" binding="table1" default-binding="true">
+              <component id="b5342" class="javax.swing.JTable" binding="playlistTable">
                 <constraints/>
                 <properties>
                   <editingColumn value="0"/>

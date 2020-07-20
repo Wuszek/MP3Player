@@ -31,7 +31,7 @@ public class PlayerFrame extends javax.swing.JFrame{
     private JPanel playlistPanel;
     private JTextPane playlistPane;
     private JList playList1;
-    private JTable table1;
+    private JTable playlistTable;
     DefaultListModel lm = new DefaultListModel();
     DefaultTableModel model = new DefaultTableModel();
     private JLabel playlistLabel;
@@ -90,10 +90,10 @@ public class PlayerFrame extends javax.swing.JFrame{
         appTitle.setText(title);
 
 
-        table1.setDefaultEditor(Object.class, null);
+        playlistTable.setDefaultEditor(Object.class, null);
         Object[] collumns = {"Nazwa", "Czas", "Ścieżka"};
         model.setColumnIdentifiers(collumns);
-        table1.setModel(model);
+        playlistTable.setModel(model);
 
 
 
@@ -182,40 +182,15 @@ public class PlayerFrame extends javax.swing.JFrame{
         setLocationRelativeTo(null);
 
 
-        table1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if(e.getClickCount() == 2) {
-
-                    int column = 2;
-                    int row = table1.getSelectedRow();
-                    String newPath = table1.getModel().getValueAt(row, column).toString();
-                    System.out.println(newPath);
-
-                    songFile = new File(newPath);
-
-                    player.addToPlayList(songFile);
-                    player.skipForward();
-                    currentDirectory = songFile.getAbsolutePath();
-                    songNameDisplay.setText("Playing now... | " + songFile.getName());
-
-                    String image = currentPath+imagePath+"\\play_enabled.png";
-                    playButton.setIcon(new ImageIcon(image));
-                    play = true;
-                    String image2 = currentPath+imagePath+"\\pause.png";
-                    pauseButton.setIcon(new ImageIcon(image2));
-                }
-            }
-        });
+        playlistTable.addMouseListener(new PlaylistTableMouseListener(playlistTable, songFile, player, playButton, play, pauseButton, songNameDisplay, currentDirectory));
 
 
-        table1.addKeyListener(new KeyAdapter() {
+        playlistTable.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
                 if(e.getKeyCode() == KeyEvent.VK_DELETE) {
-                    int i = table1.getSelectedRow();
+                    int i = playlistTable.getSelectedRow();
                     if(i >= 0){
                         model.removeRow(i);
                     }
