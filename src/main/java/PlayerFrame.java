@@ -111,34 +111,8 @@ public class PlayerFrame extends javax.swing.JFrame{
 
         stopButton.addMouseListener(new stopMouseListener(playButton,play, pause, stopButton, pauseButton, songNameDisplay, player));
 
-        pauseButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                String image = currentPath+imagePath+"\\pause_enabled.png";
-                pauseButton.setIcon(new ImageIcon(image));
+        pauseButton.addMouseListener(new pauseMouseListener(pauseButton, pause, player));
 
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
-                if(pause == false) {
-                    String image2 = currentPath + imagePath + "\\pause.png";
-                    pauseButton.setIcon(new ImageIcon(image2));
-                }
-            }
-
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                player.pause();
-                pause = true;
-                String image = currentPath+imagePath+"\\pause_enabled.png";
-                pauseButton.setIcon(new ImageIcon(image));
-
-            }
-        });
         repeatButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
