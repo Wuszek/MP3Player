@@ -47,21 +47,21 @@ public class PlayerFrame extends javax.swing.JFrame{
     static String title = "Simple mp3 player";
 
 
-    public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
-
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            // If Nimbus is not available, you can set the GUI to another look and feel.
-        }
-
-    new PlayerFrame().setVisible(true);
-    }
+//    public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
+//
+//        try {
+//            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//                if ("Windows".equals(info.getName())) {
+//                    UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (Exception e) {
+//            // If Nimbus is not available, you can set the GUI to another look and feel.
+//        }
+//
+//    new PlayerFrame().setVisible(true);
+//    }
 
     public PlayerFrame() throws IOException, UnsupportedAudioFileException {
 
@@ -99,8 +99,14 @@ public class PlayerFrame extends javax.swing.JFrame{
         volUpButton.addMouseListener(new VolUpMouseListener(volUpButton,volfull, mute, volFullButton, muteButton));
         volFullButton.addMouseListener(new VolFullMouseListener(volfull, mute, volFullButton, muteButton));
         muteButton.addMouseListener(new MuteMouseListener(volfull, mute, volFullButton, muteButton));
-        appTitle.addMouseListener(new AppTitleMousePressed(xMouse, yMouse));
-        appTitle.addMouseMotionListener(new AppTitleMouseDragged(xMouse, yMouse, this));
+       // appTitle.addMouseListener(new AppTitleMousePressed(xMouse, yMouse));
+
+        AppTitleMousePressedDragged app = new AppTitleMousePressedDragged(xMouse, yMouse, this);
+
+
+        appTitle.addMouseListener(app);
+        appTitle.addMouseMotionListener(app);
+
         playlistTable.addMouseListener(new PlaylistTableMouseListener(playlistTable, songFile, player, playButton, play, pauseButton, songNameDisplay, currentDirectory));
         playlistTable.addKeyListener(new PlaylistTableKeyListener(model, playlistTable));
 
