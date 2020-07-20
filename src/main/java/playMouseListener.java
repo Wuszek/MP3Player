@@ -10,9 +10,9 @@ import java.nio.file.Paths;
 public class playMouseListener extends MouseAdapter {
 
 
-    private AbstractButton Play;
+    private JLabel playButton;
     private boolean play;
-    private AbstractButton Pause;
+    private JLabel pauseButton;
     MP3Player player;
 
 
@@ -20,7 +20,7 @@ public class playMouseListener extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
         String image = Configuration.currentPath+Configuration.imagePath+"\\play_enabled.png";
-        Play.setIcon(new ImageIcon(image));
+        playButton.setIcon(new ImageIcon(image));
 
     }
     @Override
@@ -30,7 +30,7 @@ public class playMouseListener extends MouseAdapter {
         if(play == false){
             //System.out.println("exited");
             String image2 = Configuration.currentPath+Configuration.imagePath+"\\play.png";
-            Play.setIcon(new ImageIcon(image2));
+            playButton.setIcon(new ImageIcon(image2));
         }
 
     }
@@ -40,10 +40,10 @@ public class playMouseListener extends MouseAdapter {
         super.mouseClicked(e);
         player.play();
         String image = Configuration.currentPath+Configuration.imagePath+"\\play_enabled.png";
-        Play.setIcon(new ImageIcon(image));
+        playButton.setIcon(new ImageIcon(image));
         play = true;
         String image2 = Configuration.currentPath+Configuration.imagePath+"\\pause.png";
-        Pause.setIcon(new ImageIcon(image2));
+        pauseButton.setIcon(new ImageIcon(image2));
         System.out.println("Play");
 
     }

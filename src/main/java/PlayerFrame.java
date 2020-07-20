@@ -17,21 +17,21 @@ import static javax.swing.JOptionPane.*;
 
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
-    private JLabel Mute;
-    private JLabel VolFull;
-    private JLabel VolUp;
-    private JLabel VolDown;
+    private JLabel muteButton;
+    private JLabel volFullButton;
+    private JLabel volUpButton;
+    private JLabel volDownButton;
     private JPanel controlPanel;
-    private JLabel Stop;
-    private JLabel Play;
-    private JLabel Pause;
-    private JLabel Repeat;
-    private JLabel AppTitle;
-    private JLabel Exit;
-    private JLabel Settings;
+    private JLabel stopButton;
+    private JLabel playButton;
+    private JLabel pauseButton;
+    private JLabel repeatButton;
+    private JLabel appTitle;
+    private JLabel exit;
+    private JLabel settings;
     private JPanel headPanel;
     private JPanel songNamePanel;
-    private JLabel Open;
+    private JLabel openButton;
     private JPanel songNameSubPanel;
     private JLabel songNameDisplay;
     private JPanel playlistPanel;
@@ -93,7 +93,7 @@ public class PlayerFrame extends javax.swing.JFrame{
         songNameDisplay.setText(fileName);
         player = mp3Player();
         player.addToPlayList(songFile);
-        AppTitle.setText(title);
+        appTitle.setText(title);
 
 
         table1.setDefaultEditor(Object.class, null);
@@ -107,76 +107,16 @@ public class PlayerFrame extends javax.swing.JFrame{
 
 
 
-        Play.addMouseListener(new playMouseListener(Play, play, Pause, player) {
-//            @Override
-//            public void mouseEntered(MouseEvent e) {
-//                super.mouseEntered(e);
-//                String image = currentPath+imagePath+"\\play_enabled.png";
-//                Play.setIcon(new ImageIcon(image));
-//
-//            }
-//            @Override
-//            public void mouseExited(MouseEvent e) {
-//                super.mouseExited(e);
-//                if(play == false){
-//                //System.out.println("exited");
-//                String image2 = currentPath+imagePath+"\\play.png";
-//                Play.setIcon(new ImageIcon(image2));
-//                }
-//
-//            }
-//
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
-//                player.play();
-//                String image = currentPath+imagePath+"\\play_enabled.png";
-//                Play.setIcon(new ImageIcon(image));
-//                play = true;
-//                String image2 = currentPath+imagePath+"\\pause.png";
-//                Pause.setIcon(new ImageIcon(image2));
-//                System.out.println("Play");
-//
-//            }
-        });
+        playButton.addMouseListener(new playMouseListener(playButton, play, pauseButton, player));
 
-        Stop.addMouseListener(new MouseAdapter() {
+        stopButton.addMouseListener(new stopMouseListener(playButton,play, pause, stopButton, pauseButton, songNameDisplay, player));
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                String image = currentPath+imagePath+"\\stop_enabled.png";
-                Stop.setIcon(new ImageIcon(image));
-
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
-                String image2 = currentPath+imagePath+"\\stop.png";
-                Stop.setIcon(new ImageIcon(image2));
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                player.stop();
-                String image = currentPath+imagePath+"\\play.png";
-                Play.setIcon(new ImageIcon(image));
-                play = false;
-                String image2 = currentPath+imagePath+"\\pause.png";
-                Pause.setIcon(new ImageIcon(image2));
-                pause = false;
-                songNameDisplay.setText("Stopped");
-                System.out.println("Stop");
-
-            }
-        });
-        Pause.addMouseListener(new MouseAdapter() {
+        pauseButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\pause_enabled.png";
-                Pause.setIcon(new ImageIcon(image));
+                pauseButton.setIcon(new ImageIcon(image));
 
             }
             @Override
@@ -184,7 +124,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseExited(e);
                 if(pause == false) {
                     String image2 = currentPath + imagePath + "\\pause.png";
-                    Pause.setIcon(new ImageIcon(image2));
+                    pauseButton.setIcon(new ImageIcon(image2));
                 }
             }
 
@@ -195,11 +135,11 @@ public class PlayerFrame extends javax.swing.JFrame{
                 player.pause();
                 pause = true;
                 String image = currentPath+imagePath+"\\pause_enabled.png";
-                Pause.setIcon(new ImageIcon(image));
+                pauseButton.setIcon(new ImageIcon(image));
 
             }
         });
-        Repeat.addMouseListener(new MouseAdapter() {
+        repeatButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -211,25 +151,25 @@ public class PlayerFrame extends javax.swing.JFrame{
                     System.out.println(imagePath);
 
                     String image = currentPath+imagePath+"\\repeat_enabled.png";
-                    Repeat.setIcon(new ImageIcon(image));
+                    repeatButton.setIcon(new ImageIcon(image));
                 }else if (repeat == true){
                     repeat = false;
                     player.setRepeat(repeat);
 
                     String image = currentPath+imagePath+"\\repeat.png";
-                    Repeat.setIcon(new ImageIcon(image));
+                    repeatButton.setIcon(new ImageIcon(image));
                 }
 
             }
         });
 
-        Exit.addMouseListener(new MouseAdapter() {
+        exit.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\quit_enabled.png";
-                Exit.setIcon(new ImageIcon(image));
+                exit.setIcon(new ImageIcon(image));
 
             }
 
@@ -237,7 +177,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 String image2 = currentPath+imagePath+"\\quit.png";
-                Exit.setIcon(new ImageIcon(image2));
+                exit.setIcon(new ImageIcon(image2));
             }
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -248,13 +188,13 @@ public class PlayerFrame extends javax.swing.JFrame{
 
 
         });
-        Settings.addMouseListener(new MouseAdapter() {
+        settings.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\settings_enabled.png";
-                Settings.setIcon(new ImageIcon(image));
+                settings.setIcon(new ImageIcon(image));
 
             }
 
@@ -262,7 +202,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 String image2 = currentPath+imagePath+"\\settings.png";
-                Settings.setIcon(new ImageIcon(image2));
+                settings.setIcon(new ImageIcon(image2));
             }
 
             @Override
@@ -273,13 +213,13 @@ public class PlayerFrame extends javax.swing.JFrame{
         });
 
 
-        Open.addMouseListener(new MouseAdapter() {
+        openButton.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\open_enabled.png";
-                Open.setIcon(new ImageIcon(image));
+                openButton.setIcon(new ImageIcon(image));
 
             }
 
@@ -287,7 +227,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 String image2 = currentPath+imagePath+"\\open.png";
-                Open.setIcon(new ImageIcon(image2));
+                openButton.setIcon(new ImageIcon(image2));
             }
 
             @SneakyThrows
@@ -295,7 +235,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 JFileChooser openFileChooser = new JFileChooser(currentDirectory);
-                openFileChooser.setFileFilter(new FileTypeFilter(".mp3", "Open MP3 files only"));
+                openFileChooser.setFileFilter(new FileTypeFilter(".mp3", "openButton MP3 files only"));
                 int result = openFileChooser.showOpenDialog(null);
                 try{
                 if (result == JFileChooser.APPROVE_OPTION){
@@ -311,7 +251,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
             }
         });
-        AppTitle.addMouseListener(new MouseAdapter() {
+        appTitle.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -324,7 +264,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
                         //AppTitle.setFont(new Font("Nirmala UI", 0, 12));
 
-                        AppTitle.setText("Playing now... | " + songFile.getName());
+                        appTitle.setText("Playing now... | " + songFile.getName());
 
                         songNamePanel.setVisible(false);
                         controlPanel.setVisible(false);
@@ -335,7 +275,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                         setSize(new Dimension(700, 300));
 
                         //AppTitle.setFont(new Font("Nirmala UI", 0, 18));
-                        AppTitle.setText(title);
+                        appTitle.setText(title);
                         songNamePanel.setVisible(true);
                         controlPanel.setVisible(true);
                         playlistPanel.setVisible(true);
@@ -344,12 +284,12 @@ public class PlayerFrame extends javax.swing.JFrame{
                 }
             }
         });
-        VolDown.addMouseListener(new MouseAdapter() {
+        volDownButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\volume_down_enabled.png";
-                VolDown.setIcon(new ImageIcon(image));
+                volDownButton.setIcon(new ImageIcon(image));
 
             }
 
@@ -357,7 +297,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 String image2 = currentPath+imagePath+"\\volume_down.png";
-                VolDown.setIcon(new ImageIcon(image2));
+                volDownButton.setIcon(new ImageIcon(image2));
             }
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -366,20 +306,20 @@ public class PlayerFrame extends javax.swing.JFrame{
                 volfull = false;
                 mute = false;
                 String image = currentPath+imagePath+"\\volume_full.png";
-                VolFull.setIcon(new ImageIcon(image));
+                volFullButton.setIcon(new ImageIcon(image));
                 String image2 = currentPath+imagePath+"\\mute.png";
-                Mute.setIcon(new ImageIcon(image2));
+                muteButton.setIcon(new ImageIcon(image2));
             }
 
         });
 
 
-        VolUp.addMouseListener(new MouseAdapter() {
+        volUpButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\volume_up_enabled.png";
-                VolUp.setIcon(new ImageIcon(image));
+                volUpButton.setIcon(new ImageIcon(image));
 
             }
 
@@ -387,7 +327,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 String image2 = currentPath+imagePath+"\\volume_up.png";
-                VolUp.setIcon(new ImageIcon(image2));
+                volUpButton.setIcon(new ImageIcon(image2));
             }
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -396,18 +336,18 @@ public class PlayerFrame extends javax.swing.JFrame{
                 volfull = false;
                 mute = false;
                 String image = currentPath+imagePath+"\\volume_full.png";
-                VolFull.setIcon(new ImageIcon(image));
+                volFullButton.setIcon(new ImageIcon(image));
                 String image2 = currentPath+imagePath+"\\mute.png";
-                Mute.setIcon(new ImageIcon(image2));
+                muteButton.setIcon(new ImageIcon(image2));
             }
         });
-        VolFull.addMouseListener(new MouseAdapter() {
+        volFullButton.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\volume_full_enabled.png";
-                VolFull.setIcon(new ImageIcon(image));
+                volFullButton.setIcon(new ImageIcon(image));
 
             }
 
@@ -416,7 +356,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseExited(e);
                 if(volfull == false) {
                   String image2 = currentPath + imagePath + "\\volume_full.png";
-                  VolFull.setIcon(new ImageIcon(image2));
+                  volFullButton.setIcon(new ImageIcon(image2));
                 }
             }
 
@@ -426,7 +366,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 if(volfull == false) {
                     volfull = true;
                     String image = currentPath+imagePath+"\\volume_full_enabled.png";
-                    VolFull.setIcon(new ImageIcon(image));
+                    volFullButton.setIcon(new ImageIcon(image));
                     try {
                         new volumeControl(1);
                     } catch (IOException ioException) {
@@ -436,13 +376,13 @@ public class PlayerFrame extends javax.swing.JFrame{
                     }
                     mute = false;
                     String image2 = currentPath+imagePath+"\\mute.png";
-                    Mute.setIcon(new ImageIcon(image2));
+                    muteButton.setIcon(new ImageIcon(image2));
 
                 }
                 else if(volfull == true){
                     volfull = false;
                     String image = currentPath+imagePath+"\\volume_full.png";
-                    VolFull.setIcon(new ImageIcon(image));
+                    volFullButton.setIcon(new ImageIcon(image));
                     try {
                         new volumeControl(0.5);
                     } catch (IOException ioException) {
@@ -454,13 +394,13 @@ public class PlayerFrame extends javax.swing.JFrame{
                 }
             }
         });
-        Mute.addMouseListener(new MouseAdapter() {
+        muteButton.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 String image = currentPath+imagePath+"\\mute_enabled.png";
-                Mute.setIcon(new ImageIcon(image));
+                muteButton.setIcon(new ImageIcon(image));
 
             }
 
@@ -469,7 +409,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseExited(e);
                 if(mute == false) {
                   String image2 = currentPath + imagePath + "\\mute.png";
-                  Mute.setIcon(new ImageIcon(image2));
+                  muteButton.setIcon(new ImageIcon(image2));
                 }
             }
 
@@ -478,7 +418,7 @@ public class PlayerFrame extends javax.swing.JFrame{
                 super.mouseClicked(e);
                 if(mute == false) {
                   String image = currentPath+imagePath+"\\mute_enabled.png";
-                  Mute.setIcon(new ImageIcon(image));
+                  muteButton.setIcon(new ImageIcon(image));
                     try {
                         new volumeControl(0);
                     } catch (IOException ioException) {
@@ -489,11 +429,11 @@ public class PlayerFrame extends javax.swing.JFrame{
                     mute = true;
                   volfull = false;
                   String image2 = currentPath+imagePath+"\\volume_full.png";
-                  VolFull.setIcon(new ImageIcon(image2));
+                  volFullButton.setIcon(new ImageIcon(image2));
                 }
                 else if(mute == true){
                     String image = currentPath+imagePath+"\\mute.png";
-                    Mute.setIcon(new ImageIcon(image));
+                    muteButton.setIcon(new ImageIcon(image));
                     try {
                         new volumeControl(0.5);
                     } catch (IOException ioException) {
@@ -506,7 +446,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             }
         });
 
-        AppTitle.addMouseListener(new MouseAdapter() {
+        appTitle.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
@@ -515,7 +455,7 @@ public class PlayerFrame extends javax.swing.JFrame{
             }
         });
 
-        AppTitle.addMouseMotionListener(new MouseMotionAdapter() {
+        appTitle.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
@@ -550,10 +490,10 @@ public class PlayerFrame extends javax.swing.JFrame{
                     songNameDisplay.setText("Playing now... | " + songFile.getName());
 
                     String image = currentPath+imagePath+"\\play_enabled.png";
-                    Play.setIcon(new ImageIcon(image));
+                    playButton.setIcon(new ImageIcon(image));
                     play = true;
                     String image2 = currentPath+imagePath+"\\pause.png";
-                    Pause.setIcon(new ImageIcon(image2));
+                    pauseButton.setIcon(new ImageIcon(image2));
                 }
             }
         });
