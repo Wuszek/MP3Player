@@ -105,21 +105,8 @@ public class PlayerFrame extends javax.swing.JFrame{
         volUpButton.addMouseListener(new VolUpMouseListener(volUpButton,volfull, mute, volFullButton, muteButton));
         volFullButton.addMouseListener(new VolFullMouseListener(volfull, mute, volFullButton, muteButton));
         muteButton.addMouseListener(new MuteMouseListener(volfull, mute, volFullButton, muteButton));
-
         appTitle.addMouseListener(new AppTitleMousePressed(xMouse, yMouse));
-
-        appTitle.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                super.mouseDragged(e);
-                int x = e.getXOnScreen();
-                int y = e.getYOnScreen();
-                System.out.println(x + " " + y);
-                setLocation(x - xMouse, y - yMouse);
-                repaint();
-            }
-        });
-
+        appTitle.addMouseMotionListener(new AppTitleMouseDragged(xMouse, yMouse, this));
         playlistTable.addMouseListener(new PlaylistTableMouseListener(playlistTable, songFile, player, playButton, play, pauseButton, songNameDisplay, currentDirectory));
         playlistTable.addKeyListener(new PlaylistTableKeyListener(model, playlistTable));
 
