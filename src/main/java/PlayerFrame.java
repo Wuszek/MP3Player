@@ -107,37 +107,37 @@ public class PlayerFrame extends javax.swing.JFrame{
 
 
 
-        Play.addMouseListener(new playMouseListener() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                String image = currentPath+imagePath+"\\play_enabled.png";
-                Play.setIcon(new ImageIcon(image));
-
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
-                if(play == false){
-                //System.out.println("exited");
-                String image2 = currentPath+imagePath+"\\play.png";
-                Play.setIcon(new ImageIcon(image2));
-                }
-
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                player.play();
-                String image = currentPath+imagePath+"\\play_enabled.png";
-                Play.setIcon(new ImageIcon(image));
-                play = true;
-                String image2 = currentPath+imagePath+"\\pause.png";
-                Pause.setIcon(new ImageIcon(image2));
-                System.out.println("Play");
-
-            }
+        Play.addMouseListener(new playMouseListener(Play, play, Pause, player) {
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//                super.mouseEntered(e);
+//                String image = currentPath+imagePath+"\\play_enabled.png";
+//                Play.setIcon(new ImageIcon(image));
+//
+//            }
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                super.mouseExited(e);
+//                if(play == false){
+//                //System.out.println("exited");
+//                String image2 = currentPath+imagePath+"\\play.png";
+//                Play.setIcon(new ImageIcon(image2));
+//                }
+//
+//            }
+//
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+//                player.play();
+//                String image = currentPath+imagePath+"\\play_enabled.png";
+//                Play.setIcon(new ImageIcon(image));
+//                play = true;
+//                String image2 = currentPath+imagePath+"\\pause.png";
+//                Pause.setIcon(new ImageIcon(image2));
+//                System.out.println("Play");
+//
+//            }
         });
 
         Stop.addMouseListener(new MouseAdapter() {
