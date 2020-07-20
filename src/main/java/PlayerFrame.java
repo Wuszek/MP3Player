@@ -106,14 +106,7 @@ public class PlayerFrame extends javax.swing.JFrame{
         volFullButton.addMouseListener(new VolFullMouseListener(volfull, mute, volFullButton, muteButton));
         muteButton.addMouseListener(new MuteMouseListener(volfull, mute, volFullButton, muteButton));
 
-        appTitle.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                xMouse = e.getX();
-                yMouse = e.getY();
-            }
-        });
+        appTitle.addMouseListener(new AppTitleMousePressed(xMouse, yMouse));
 
         appTitle.addMouseMotionListener(new MouseMotionAdapter() {
             @Override

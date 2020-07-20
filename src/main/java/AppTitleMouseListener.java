@@ -50,4 +50,6 @@ public class AppTitleMouseListener extends MouseAdapter {
             }
         }
     }
+
+
 }
