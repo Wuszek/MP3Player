@@ -113,29 +113,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
         pauseButton.addMouseListener(new pauseMouseListener(pauseButton, pause, player));
 
-        repeatButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if(repeat == false){
-                    repeat = true;
-                    player.setRepeat(repeat);
-
-                    System.out.println(currentPath);
-                    System.out.println(imagePath);
-
-                    String image = currentPath+imagePath+"\\repeat_enabled.png";
-                    repeatButton.setIcon(new ImageIcon(image));
-                }else if (repeat == true){
-                    repeat = false;
-                    player.setRepeat(repeat);
-
-                    String image = currentPath+imagePath+"\\repeat.png";
-                    repeatButton.setIcon(new ImageIcon(image));
-                }
-
-            }
-        });
+        repeatButton.addMouseListener(new repeatMouseListener(repeat, repeatButton, player));
 
         exit.addMouseListener(new MouseAdapter() {
 
