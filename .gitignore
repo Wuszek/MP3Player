@@ -1,4 +1,4 @@
 target/
-MP3Player.iml
+*.iml
 .idea/
 out/
