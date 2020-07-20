@@ -3,9 +3,6 @@ import jaco.mp3.player.MP3Player;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
 
@@ -39,10 +36,7 @@ public class PlayerFrame extends javax.swing.JFrame{
 
     MP3Player player;
     File songFile;
-    File newSongFile;
     String currentDirectory = "home.user";
-    String currentPath;
-    String imagePath;
     boolean repeat = false;
     boolean play = false;
     boolean pause = false;
