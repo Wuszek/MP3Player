@@ -1,13 +1,13 @@
 import jaco.mp3.player.MP3Player;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 public class PlayerFrame extends javax.swing.JFrame{
     private JPanel mainPanel;
@@ -77,10 +77,7 @@ public class PlayerFrame extends javax.swing.JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
-        currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-        imagePath = "\\src\\main\\resources";
-
-        String defaultTrack = currentPath+imagePath+"\\test.mp3";
+        String defaultTrack = Configuration.currentPath+ Configuration.imagePath+"\\test.mp3";
 
         songFile = new File(defaultTrack);
         String fileName = songFile.getName();
@@ -95,66 +92,18 @@ public class PlayerFrame extends javax.swing.JFrame{
         model.setColumnIdentifiers(collumns);
         playlistTable.setModel(model);
 
-
-
         model.addRow(new Object[]{songFile.getName(), SongDurationCalculator.getDurationWithMp3Spi(songFile),songFile});
-
-
-
         playButton.addMouseListener(new PlayMouseListener(playButton, play, pauseButton, player));
-
         stopButton.addMouseListener(new StopMouseListener(playButton,play, pause, stopButton, pauseButton, songNameDisplay, player));
-
         pauseButton.addMouseListener(new PauseMouseListener(pauseButton, pause, player));
-
         repeatButton.addMouseListener(new RepeatMouseListener(repeat, repeatButton, player));
-
         exitButton.addMouseListener(new ExitMouseListener(exitButton));
-
         settingsButton.addMouseListener(new SettingsMouseListener(settingsButton));
-
-
         openButton.addMouseListener(new OpenMouseListener(openButton, songFile, model, currentDirectory));
-
-        appTitle.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if(e.getClickCount() == 2){
-                    System.out.println("Double clicked");
-                    if(windowCollapsed == false){
-                        windowCollapsed = true;
-
-                        setSize(new Dimension(700, 50));
-
-                        //AppTitle.setFont(new Font("Nirmala UI", 0, 12));
-
-                        appTitle.setText("Playing now... | " + songFile.getName());
-
-                        songNamePanel.setVisible(false);
-                        controlPanel.setVisible(false);
-                        playlistPanel.setVisible(false);
-
-                    } else if (windowCollapsed == true){
-                        windowCollapsed = false;
-                        setSize(new Dimension(700, 300));
-
-                        //AppTitle.setFont(new Font("Nirmala UI", 0, 18));
-                        appTitle.setText(title);
-                        songNamePanel.setVisible(true);
-                        controlPanel.setVisible(true);
-                        playlistPanel.setVisible(true);
-
-                    }
-                }
-            }
-        });
+        appTitle.addMouseListener(new AppTitleMouseListener(windowCollapsed, songNamePanel, controlPanel, playlistPanel, appTitle, songFile, title, this));
         volDownButton.addMouseListener(new VolDownMouseListener(volDownButton, volfull, mute, volFullButton, muteButton));
-
         volUpButton.addMouseListener(new VolUpMouseListener(volUpButton,volfull, mute, volFullButton, muteButton));
-
         volFullButton.addMouseListener(new VolFullMouseListener(volfull, mute, volFullButton, muteButton));
-
         muteButton.addMouseListener(new MuteMouseListener(volfull, mute, volFullButton, muteButton));
 
         appTitle.addMouseListener(new MouseAdapter() {
@@ -178,19 +127,12 @@ public class PlayerFrame extends javax.swing.JFrame{
             }
         });
 
-
-
-
         playlistTable.addMouseListener(new PlaylistTableMouseListener(playlistTable, songFile, player, playButton, play, pauseButton, songNameDisplay, currentDirectory));
-
-
         playlistTable.addKeyListener(new PlaylistTableKeyListener(model, playlistTable));
 
         pack();
         setLocationRelativeTo(null);
     }
-
-
 
     private MP3Player mp3Player(){
         MP3Player mp3Player = new MP3Player();
